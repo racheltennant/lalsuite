@@ -4762,6 +4762,7 @@ int XLALSimInspiralPolarizationsFromChooseFDModes(
         ret = XLALSimIMRPhenomXPCalculateModelParametersFromSourceFrame(&d1, &d2, &d3, &theta, &d4, &d5, &zeta_polarization, m1, m2, f_ref, phiRef, inclination, S1x,S1y,S1z, S2x,S2y,S2z, LALparams);
         XLAL_CHECK(XLAL_SUCCESS == ret, XLAL_EFUNC, "Error: XLALSimIMRPhenomXPCalculateModelParametersFromSourceFrame failed.\n");
         azimuthal = 0.;
+	break;
 		    
  	case IMRPhenomZPHM:
         phiRef_modes = phiRef;
@@ -4769,8 +4770,8 @@ int XLALSimInspiralPolarizationsFromChooseFDModes(
         ret = XLALSimIMRPhenomXPCalculateModelParametersFromSourceFrame(&d1, &d2, &d3, &theta, &d4, &d5, &zeta_polarization, m1, m2, f_ref, phiRef, inclination, S1x,S1y,S1z, S2x,S2y,S2z, LALparams);
         XLAL_CHECK(XLAL_SUCCESS == ret, XLAL_EFUNC, "Error: XLALSimIMRPhenomXPCalculateModelParametersFromSourceFrame failed.\n");
         azimuthal = 0.;
-
         break;
+		    
         case SEOBNRv4HM_ROM:
 
         break;
