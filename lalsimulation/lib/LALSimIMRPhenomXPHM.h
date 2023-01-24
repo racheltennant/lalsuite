@@ -17,8 +17,8 @@
 *  MA  02110-1301  USA
 */
 
-#ifndef _LALSIM_IMR_PHENOMXPHMnew_H
-#define _LALSIM_IMR_PHENOMXPHMnew_H
+#ifndef _LALSIM_IMR_PHENOMXPHM_H
+#define _LALSIM_IMR_PHENOMXPHM_H
 
 
 #ifdef __cplusplus
