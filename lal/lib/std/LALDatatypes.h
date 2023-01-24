@@ -22,7 +22,9 @@
 #ifndef _LALDATATYPES_H
 #define _LALDATATYPES_H
 
-#include <lal/LALAtomicDatatypes.h>
+/*#include <lal/LALAtomicDatatypes.h> */
+#include "/home/2405239g/src/lalsuite/lal/lib/std/LALAtomicDatatypes.h"
+
 
 /** \addtogroup LALDatatypes */ /** @{ */
 

@@ -22,7 +22,7 @@
 
 /*Test*/
 
-#include <lal/LALSimIMR.h>
+#include<lal/LALSimIMR.h>
 #include <lal/SphericalHarmonics.h>
 #include <lal/Sequence.h>
 #include <lal/Date.h>
@@ -519,8 +519,8 @@ int IMRPhenomXHMGenerateFDOneMode(
   LALDict *lalParams                    /**< extra params **/
 )
 {
-
-  #if DEBUG == 1
+  /*!step only useful during the debugging process (remove later when code works fine)*/
+  #if DEBUG == 1 
   printf("\n\n ***** IMRPhenomXHMGenerateFDOneMode **** \n\n");
   #endif
 
@@ -530,6 +530,7 @@ int IMRPhenomXHMGenerateFDOneMode(
   UINT4 initial_status = XLAL_SUCCESS;
 
   REAL8Sequence *freqs;
+  /*!Compute the frequency array*/
   UINT4 offset = SetupWFArrays(&freqs, htildelm, freqs_In, pWF, ligotimegps_zero);
 
   #if DEBUG == 1

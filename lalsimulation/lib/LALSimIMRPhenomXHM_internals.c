@@ -1783,7 +1783,7 @@ void IMRPhenomXHM_GetPhaseCoefficients(IMRPhenomXHMAmpCoefficients *pAmp, IMRPhe
     #endif
 
 
-    // for the 21, we need to make sure the sign of the PN amplitude is positive, else we'll need to flip its phase by Pi
+    // for t he 21, we need to make sure the sign of the PN amplitude is positive, else we'll need to flip its phase by Pi
     if ((pWFHM->modeTag)== 21)
     {
       int ampsign=IMRPhenomXHM_PN21AmpSign(0.008,pWF22);
@@ -2133,7 +2133,16 @@ void  GetSpheroidalCoefficients(IMRPhenomXHMPhaseCoefficients *pPhase, IMRPhenom
     if (!IMRPhenomX_StepFuncBool(f, pPhase->fPhaseMatchIN))
     {
       double PhiIns = IMRPhenomXHM_Inspiral_Phase_AnsatzInt(f, powers_of_f, pPhase);
-      return PhiIns + pPhase->C1INSP*f + pPhase->CINSP + pPhase->deltaphiLM;
+
+      /*Define the phase shift derived*/
+
+      /*Parameters needed*/
+      double paramValue = ; /*formula for the compton wavelength?*/
+      /*Insert lambda_grav parameter in Dictionary*/
+      XLALSimInspiralWaveformParamsInsert(lalParams, 'lambda_grav', REAL8, 0);
+      /*Phase shift*/
+      double phase_shift = 2*LAL_PI*f*(Dmeas*GSL_CONST_MKSA_SPEED_OF_LIGHT*(1-((m_over_2)**2))/(2*(lambda_grav**2)*(1+z)*(f_final**2)))
+      return PhiIns + pPhase->C1INSP*f + pPhase->CINSP + pPhase->deltaphiLM + phase_shift;
     }
     // MRD range, f > fPhaseIntMax
     if (IMRPhenomX_StepFuncBool(f, pPhase->fPhaseMatchIM))
