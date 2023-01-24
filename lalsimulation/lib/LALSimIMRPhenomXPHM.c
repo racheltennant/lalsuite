@@ -46,7 +46,7 @@
 #define PHENOMXDEBUG 1
 #endif
 
-#include "LALSimIMRPhenomXPHMnew.h"
+#include "LALSimIMRPhenomXPHM.h"
 
 
 /* Generic routine for twisting up higher multipole models */
