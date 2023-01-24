@@ -431,6 +431,7 @@ typedef enum tagApproximant {
                        * @remarks Implemented in lalsimulation (frequency domain).  */
    IMRPhenomXP, 		/**< Frequency domain, precessing phenomenological IMR waveform model. */
    IMRPhenomXPHM, 	/**< Frequency domain, precessing with subdominant modes phenomenological IMR waveform model. */
+   IMRPhenomZPHM, 	/**< Frequency domain, precessing with subdominant modes phenomenological IMR waveform model, our own version. */
    TEOBResumS,          /**< Resummed Spin-aligned Tidal EOB
                          * @remarks Implemented in lalsimulation (time domain). */
    IMRPhenomT,      /** Time domain, non-precessing phenomenological IMR waveform model for the dominant (2,2) and (2,-2) modes ([arXiv: 20XY.ZZZZZ]). */
