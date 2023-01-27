@@ -30,7 +30,7 @@ injection_parameters = dict(
 
 # Fixed arguments passed into the source model
 waveform_arguments = dict(
-    waveform_approximant="IMRPhenomXPHM",
+    waveform_approximant="IMRPhenomZPHM",
     reference_frequency=50.0,
     minimum_frequency=40.0,
 )

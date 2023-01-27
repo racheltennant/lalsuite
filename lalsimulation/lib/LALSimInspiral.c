@@ -306,6 +306,7 @@ static double fixReferenceFrequency(const double f_ref, const double f_min, cons
 			return f_min;
 		case IMRPhenomXP:
 		case IMRPhenomXPHM:
+        case IMRPhenomZPHM:
         case NRSur4d2s:
         case IMRPhenomT:
         case IMRPhenomTHM:
@@ -3604,6 +3605,7 @@ SphHarmFrequencySeries *XLALSimInspiralChooseFDModes(
 			break;
 
 		case IMRPhenomXPHM:
+        case IMRPhenomZPHM:
 			/* Waveform-specific sanity checks */
 			if( !XLALSimInspiralWaveformParamsFlagsAreDefault(LALparams) )
 					XLAL_ERROR_NULL(XLAL_EINVAL, "Non-default flags given, but this approximant does not support this case.");
@@ -6287,6 +6289,7 @@ int XLALSimInspiralImplementedTDApproximants(
 		case IMRPhenomXHM:
 		case IMRPhenomXP:
 		case IMRPhenomXPHM:
+        case IMRPhenomZPHM:
         case PhenSpinTaylorRD:
         case SEOBNRv1:
         case SpinDominatedWf:
@@ -6350,6 +6353,7 @@ int XLALSimInspiralImplementedFDApproximants(
 	    case IMRPhenomXHM:
 		case IMRPhenomXP:
 		case IMRPhenomXPHM:
+        case IMRPhenomZPHM:
         case EOBNRv2_ROM:
         case EOBNRv2HM_ROM:
         case SEOBNRv1_ROM_EffectiveSpin:
@@ -6769,6 +6773,7 @@ int XLALSimInspiralGetSpinSupportFromApproximant(Approximant approx){
     case IMRPhenomPv3HM:
 	case IMRPhenomXP:
 	case IMRPhenomXPHM:
+    case IMRPhenomZPHM:
     case SpinTaylorT5Fourier:
     case SpinTaylorT4Fourier:
     case SpinDominatedWf:
@@ -6891,6 +6896,7 @@ int XLALSimInspiralGetSpinFreqFromApproximant(Approximant approx){
     case IMRPhenomPv2_NRTidalv2:
 	case IMRPhenomXP:
 	case IMRPhenomXPHM:
+    case IMRPhenomZPHM:
     case SpinTaylorT5Fourier:
     case SpinTaylorT4Fourier:
     case SpinDominatedWf:
@@ -7062,6 +7068,7 @@ int XLALSimInspiralApproximantAcceptTestGRParams(Approximant approx){
     case IMRPhenomXHM:
 	case IMRPhenomXP:
 	case IMRPhenomXPHM:
+    case IMRPhenomZPHM:
     case IMRPhenomT:
     case IMRPhenomTHM:
     case IMRPhenomTP:
