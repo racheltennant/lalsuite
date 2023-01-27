@@ -184,6 +184,7 @@ static const char *lalSimulationApproximantNames[] = {
     INITIALIZE_NAME(IMRPhenomXHM),
 	INITIALIZE_NAME(IMRPhenomXP),
     INITIALIZE_NAME(IMRPhenomXPHM),
+    INITIALIZE_NAME(IMRPhenomZPHM),
 		INITIALIZE_NAME(TEOBResumS),
     INITIALIZE_NAME(IMRPhenomT),
     INITIALIZE_NAME(IMRPhenomTHM),
@@ -1161,6 +1162,7 @@ int XLALSimInspiralChooseTDWaveform(
 			break;
 
 		case IMRPhenomXPHM:
+        case IMRPhenomZPHM:
 			polariz = 0;
 			ret = XLALSimInspiralTDFromFD(hplus, hcross, m1, m2, S1x, S1y, S1z, S2x, S2y, S2z, distance, inclination, phiRef, longAscNodes, eccentricity, meanPerAno, deltaT, f_min, f_ref, LALparams, approximant);
 			break;
@@ -2283,6 +2285,7 @@ int XLALSimInspiralChooseFDWaveform(
 			break;
 
 		case IMRPhenomXPHM:
+        case IMRPhenomZPHM:
 			/* Waveform-specific sanity checks */
 			if( !XLALSimInspiralWaveformParamsFrameAxisIsDefault(LALparams) )
 			{
@@ -4683,6 +4686,7 @@ int XLALSimInspiralPolarizationsFromChooseFDModes(
         break;
         
         case IMRPhenomXPHM:
+        case IMRPhenomZPHM:
         phiRef_modes = phiRef;
         REAL8 d1=0, d2=0, d3=0, d4=0, d5=0;
         ret = XLALSimIMRPhenomXPCalculateModelParametersFromSourceFrame(&d1, &d2, &d3, &theta, &d4, &d5, &zeta_polarization, m1, m2, f_ref, phiRef, inclination, S1x,S1y,S1z, S2x,S2y,S2z, LALparams);
