@@ -238,6 +238,9 @@ int XLALSimIMRPhenomXPHM(
   if (lalParams == NULL)
   {
       lalParams_aux = XLALCreateDict();
+      /* This adds ZeroParameter */
+      INT4 ZeroParameter = 0;
+      XLALSimInspiralWaveformParamsLookupPhenomXPHMZeroParameter(lalParams_aux);
   }
   else{
       lalParams_aux = XLALDictDuplicate(lalParams);
