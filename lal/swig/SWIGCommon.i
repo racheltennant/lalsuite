@@ -503,8 +503,12 @@ static const LALStatus swiglal_empty_LALStatus = {0, NULL, NULL, NULL, NULL, 0, 
     void *vptr = isptr ? *((void**)ptr) : ptr;
     if (copyobj) {
       vptr = memcpy(XLALCalloc(1, len), vptr, len);
+      tflags |= SWIG_POINTER_OWN;
+    } else if (vptr != NULL && swiglal_not_empty(self)) {
+      swiglal_store_parent(vptr, self);
+      tflags |= SWIG_POINTER_OWN;
     }
-    return SWIG_NewPointerObj(vptr, tinfo, copyobj ? tflags | SWIG_POINTER_OWN : tflags);
+    return SWIG_NewPointerObj(vptr, tinfo, tflags);
   }
 }
 %fragment("swiglal_as_SWIGTYPE", "header") {
@@ -1805,10 +1809,18 @@ if (strides[I-1] == 0) {
     return res;
   }
 }
+#if SWIG_VERSION >= 0x040100
+%typemaps_string_alloc(%checkcode(STRING), %checkcode(char),
+                       SWIGWARN_TYPEMAP_CHARLEAK_MSG, char, LALchar,
+                       SWIG_AsLALcharPtrAndSize, SWIG_FromLALcharPtrAndSize,
+                       strlen, SWIG_strnlen, %swiglal_new_copy_array, XLALFree,
+                       "<limits.h>", CHAR_MIN, CHAR_MAX);
+#else
 %typemaps_string_alloc(%checkcode(STRING), %checkcode(char), char, LALchar,
                        SWIG_AsLALcharPtrAndSize, SWIG_FromLALcharPtrAndSize,
                        strlen, SWIG_strnlen, %swiglal_new_copy_array, XLALFree,
                        "<limits.h>", CHAR_MIN, CHAR_MAX);
+#endif
 
 ///
 /// Typemaps for string pointers.  By default, treat arguments of type <tt>char**</tt> as output-only

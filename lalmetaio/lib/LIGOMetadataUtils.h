@@ -64,19 +64,6 @@ extern "C" {
 #include <lal/LIGOMetadataTables.h>
 #include <lal/LALDetectors.h>
 
-/**
- * The \c LALPlaygroundDataMask contains an enum type for describing the
- * subset of data to be used, \c playground_only, \c exclude_play and \c all_data.
- */
-typedef enum tagLALPlaygroundDataMask
-{
-  unspecified_data_type,
-  playground_only,
-  exclude_play,
-  all_data
-}
-LALPlaygroundDataMask;
-
 
 /*
  *
@@ -86,7 +73,7 @@ LALPlaygroundDataMask;
 
 ProcessTable *XLALCreateProcessTableRow(void);
 #ifndef SWIG   // exclude from SWIG interface
-void XLALDestroyProcessTableRow(ProcessTable *);
+ProcessTable *XLALDestroyProcessTableRow(ProcessTable *);
 #endif   // SWIG
 void XLALDestroyProcessTable(ProcessTable *);
 long XLALProcessTableGetNextID(ProcessTable *);
@@ -101,13 +88,13 @@ int XLALPopulateProcessTable(
 
 ProcessParamsTable *XLALCreateProcessParamsTableRow(const ProcessTable *);
 #ifndef SWIG   // exclude from SWIG interface
-void XLALDestroyProcessParamsTableRow(ProcessParamsTable *);
+ProcessParamsTable *XLALDestroyProcessParamsTableRow(ProcessParamsTable *);
 #endif   // SWIG
 void XLALDestroyProcessParamsTable(ProcessParamsTable *);
 
 TimeSlide *XLALCreateTimeSlide(void);
 #ifndef SWIG   // exclude from SWIG interface
-void XLALDestroyTimeSlide(TimeSlide *);
+TimeSlide *XLALDestroyTimeSlide(TimeSlide *);
 #endif   // SWIG
 void XLALDestroyTimeSlideTable(TimeSlide *);
 const TimeSlide *XLALTimeSlideConstGetByIDAndInstrument(const TimeSlide *, long, const char *);
@@ -115,15 +102,52 @@ TimeSlide *XLALTimeSlideGetByIDAndInstrument(TimeSlide *, long, const char *);
 
 SearchSummaryTable *XLALCreateSearchSummaryTableRow(const ProcessTable *);
 #ifndef SWIG   // exclude from SWIG interface
-void XLALDestroySearchSummaryTableRow(SearchSummaryTable *);
+SearchSummaryTable *XLALDestroySearchSummaryTableRow(SearchSummaryTable *);
 #endif   // SWIG
 void XLALDestroySearchSummaryTable(SearchSummaryTable *);
 
 SegmentTable *XLALCreateSegmentTableRow(const ProcessTable *process);
 #ifndef SWIG   // exclude from SWIG interface
-void XLALDestroySegmentTableRow(SegmentTable *row);
+SegmentTable *XLALDestroySegmentTableRow(SegmentTable *row);
 #endif   // SWIG
 void XLALDestroySegmentTable(SegmentTable *head);
+
+SnglInspiralTable *XLALCreateSnglInspiralTableRow(const ProcessTable *process);
+#ifndef SWIG   // exclude from SWIG interface
+SnglInspiralTable *XLALDestroySnglInspiralTableRow(SnglInspiralTable *row);
+#endif   // SWIG
+void XLALDestroySnglInspiralTable(SnglInspiralTable *head);
+
+SimInspiralTable *XLALCreateSimInspiralTableRow(const ProcessTable *process);
+#ifndef SWIG   // exclude from SWIG interface
+SimInspiralTable *XLALDestroySimInspiralTableRow(SimInspiralTable *row);
+#endif   // SWIG
+void XLALDestroySimInspiralTable(SimInspiralTable *head);
+
+SnglRingdownTable *XLALCreateSnglRingdownTableRow(const ProcessTable *process);
+#ifndef SWIG   // exclude from SWIG interface
+SnglRingdownTable *XLALDestroySnglRingdownTableRow(SnglRingdownTable *row);
+#endif   // SWIG
+void XLALDestroySnglRingdownTable(SnglRingdownTable *head);
+
+SimRingdownTable *XLALCreateSimRingdownTableRow(const ProcessTable *process);
+#ifndef SWIG   // exclude from SWIG interface
+SimRingdownTable *XLALDestroySimRingdownTableRow(SimRingdownTable *row);
+#endif   // SWIG
+void XLALDestroySimRingdownTable(SimRingdownTable *head);
+
+
+SnglBurst *XLALCreateSnglBurst(void);
+#ifndef SWIG   // exclude from SWIG interface
+SnglBurst *XLALDestroySnglBurst(SnglBurst *event);
+#endif   // SWIG
+void XLALDestroySnglBurstTable(SnglBurst *head);
+
+SimBurst *XLALCreateSimBurst(void);
+#ifndef SWIG   // exclude from SWIG interface
+SimBurst *XLALDestroySimBurst(SimBurst *row);
+#endif   // SWIG
+void XLALDestroySimBurstTable(SimBurst *head);
 
 int
 XLALCountProcessTable(
@@ -135,9 +159,26 @@ XLALCountProcessParamsTable(
     ProcessParamsTable *head
     );
 
-int
-XLALIFONumber(
-    const char *ifo
+long
+XLALSimInspiralAssignIDs (
+    SimInspiralTable *head,
+    long process_id,
+    long simulation_id
+    );
+
+long
+XLALSnglBurstAssignIDs(
+    SnglBurst *head,
+    long process_id,
+    long event_id
+    );
+
+long
+XLALSimBurstAssignIDs(
+    SimBurst *head,
+    long process_id,
+    long time_slide_id,
+    long event_id
     );
 
 void

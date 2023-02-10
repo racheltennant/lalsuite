@@ -1087,7 +1087,8 @@ initUserVars ( UserInput_t *uvar )
   XLALRegisterUvarMember( 	dorbitArgp, 	 REAL8, 0,  OPTIONAL, "Binary Orbit: Spacing in Orbital argument of periapse in radians");
   XLALRegisterUvarMember( 	dorbitEcc, 	 REAL8, 0,  OPTIONAL, "Binary Orbit: Spacing in Orbital eccentricity");
 
-  XLALRegisterUvarMember(DataFiles, 	STRING, 'D', OPTIONAL, "File-pattern specifying (also multi-IFO) input SFT-files");
+  XLALRegisterUvarMember(DataFiles, 	STRING, 'D', OPTIONAL, "File-pattern specifying (also multi-IFO) input SFT-files. Possibilities are:\n"
+                         " - '<SFT file>;<SFT file>;...', where <SFT file> may contain wildcards\n - 'list:<file containing list of SFT files>'");
 
   XLALRegisterUvarMember( assumeSqrtSX,	 STRINGVector, 0,  OPTIONAL, "Don't estimate noise-floors but assume (stationary) per-IFO sqrt{SX} (if single value: use for all IFOs).\nNote that, unlike the historic --SignalOnly flag, this option will not lead to explicitly adding a +4 'correction' for noiseless SFTs to the output F-statistic.");
 
@@ -1222,9 +1223,14 @@ InitFstat ( ConfigVariables *cfg, const UserInput_t *uvar )
     XLAL_CHECK ( XLALParseMultiLALDetector ( &(cfg->multiIFO), uvar->IFOs ) == XLAL_SUCCESS, XLAL_EFUNC );
   }
 
+  LIGOTimeGPS minStartTime = uvar->minStartTime;
+  LIGOTimeGPS maxStartTime = uvar->maxStartTime;
+  constraints.minStartTime = &minStartTime;
+  constraints.maxStartTime = &maxStartTime;
+
   /* read timestamps if requested by the user */
   if (uvar->timestampsFiles != NULL) {
-      XLAL_CHECK ( (cfg->multiTimestamps = XLALReadMultiTimestampsFiles ( uvar->timestampsFiles )) != NULL, XLAL_EFUNC );
+      XLAL_CHECK ( (cfg->multiTimestamps = XLALReadMultiTimestampsFilesConstrained ( uvar->timestampsFiles, constraints.minStartTime,  constraints.maxStartTime )) != NULL, XLAL_EFUNC );
       XLAL_CHECK ( (cfg->multiTimestamps->length > 0) && (cfg->multiTimestamps->data != NULL), XLAL_EINVAL, "Got empty timestamps-list from XLALReadMultiTimestampsFiles()\n" );
 
       for ( UINT4 X=0; X < cfg->multiTimestamps->length; X ++ ) {
@@ -1232,14 +1238,8 @@ InitFstat ( ConfigVariables *cfg, const UserInput_t *uvar )
       }
   }
 
-  LIGOTimeGPS minStartTime = uvar->minStartTime;
-  LIGOTimeGPS maxStartTime = uvar->maxStartTime;
-  constraints.minStartTime = &minStartTime;
-  constraints.maxStartTime = &maxStartTime;
-
   /* get full SFT-catalog of all matching (multi-IFO) SFTs */
   /* DataFiles optional because of injectSqrtSX option, don't try to load if no files given **/
-
   if( uvar->DataFiles != NULL ) {
     LogPrintf (LOG_NORMAL, "Finding all SFTs to load ... ");
     XLAL_CHECK ( (catalog = XLALSFTdataFind ( uvar->DataFiles, &constraints )) != NULL, XLAL_EFUNC );
@@ -1248,7 +1248,6 @@ InitFstat ( ConfigVariables *cfg, const UserInput_t *uvar )
     /* Build a fake catalog with timestamps and IFOs given on the commandline instead of noise data files */
     /* the data missing in the locators then signal to the Fstat code that fake noise needs to be generated, */
     /* the noise level is passed from the sqrtSX option */
-
     XLAL_CHECK ( (catalog = XLALMultiAddToFakeSFTCatalog ( NULL, uvar->IFOs,cfg-> multiTimestamps)) != NULL, XLAL_EFUNC );
   }
 
@@ -1396,7 +1395,7 @@ InitFstat ( ConfigVariables *cfg, const UserInput_t *uvar )
     scanInit.Tspan     = cfg->Tspan;
 
     // just use first SFTs' IFO for metric (should be irrelevant)
-    LALDetector *detector;
+    const LALDetector *detector;
     XLAL_CHECK ( (detector = XLALGetSiteInfo ( catalog->data[0].header.name ) ) != NULL, XLAL_EFUNC );
     scanInit.Detector  = detector;
 
@@ -1414,7 +1413,6 @@ InitFstat ( ConfigVariables *cfg, const UserInput_t *uvar )
     XLAL_CHECK ( (cfg->scanState = XLALInitDopplerFullScan ( &scanInit)) != NULL, XLAL_EFUNC );
     LogPrintfVerbatim (LOG_NORMAL, "template grid ready.\n");
     XLALNumDopplerTemplates ( cfg->scanState );
-    XLALFree ( detector );
   }
 
   /* maximum ranges of binary orbit parameters */

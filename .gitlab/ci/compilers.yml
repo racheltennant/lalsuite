@@ -1,8 +1,8 @@
-# -- compiler tests -----------------------------
+# ----------------------------------------------------------------------
+# LALSuite: compiler tests
 #
-# Top-level build tests for various non-default
-# compilers
-#
+# Top-level build tests for various non-default compilers.
+# ----------------------------------------------------------------------
 
 .compiler-test:
   stage: compiler tests
@@ -10,9 +10,8 @@
   extends:
     - .make-distcheck
   rules:
-    - !reference [.skip-compiler, rules]
-    - !reference [.scheduled, rules]
-    - !reference [.manual, rules]
+    - !reference [.ci-compiler, rules]
+    - !reference [.ci-merge-build, rules]
 
 clang:12:
   extends:
@@ -89,7 +88,6 @@ gcc:12:
   extends:
     - .compiler-test:gcc
   image: igwn/lalsuite-dev-gcc:12
-  allow_failure: true
 
 cuda:
   extends:
@@ -118,6 +116,12 @@ cuda:
 icc:
   extends:
     - .compiler-test
-  image: igwn/lalsuite-dev-icc:el7
+  image: igwn/lalsuite-dev-icc:bullseye
   variables:
     CONFIGURE_FLAGS: "--enable-doxygen --enable-swig --enable-python --disable-swig-octave --disable-static --enable-intelfft"
+  before_script:
+    # initialise intel stuff
+    - . /opt/intel/oneapi/setvars.sh
+    - !reference [".compiler-test", "before_script"]
+  # best effort
+  allow_failure: true

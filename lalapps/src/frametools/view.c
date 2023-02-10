@@ -44,8 +44,6 @@
 #include <lal/SnglBurstUtils.h>
 #include <lal/LIGOLwXML.h>
 #include <lal/LIGOLwXMLRead.h>
-#include <lal/LIGOLwXMLBurstRead.h>
-#include <lal/LIGOLwXMLInspiralRead.h>
 #include <lal/FindChirp.h>
 #include <lal/GenerateBurst.h>
 
@@ -384,9 +382,6 @@ int inspinj( REAL4TimeSeries *series, const char *inspinjfile, const char *calfi
 	COMPLEX8FrequencySeries *response;
 	REAL4TimeSeries keep;
 	// REAL8 deltaF;
-	int ninj;
-	int tbeg;
-	int tend;
 
 	if ( ! inspinjfile )
 		return 0;
@@ -395,19 +390,13 @@ int inspinj( REAL4TimeSeries *series, const char *inspinjfile, const char *calfi
 		return 0;
 	}
 
-	tbeg = series->epoch.gpsSeconds;
-	tend = tbeg + ceil( series->deltaT * series->data->length );
-	ninj = SimInspiralTableFromLIGOLw( &injections, inspinjfile, tbeg, tend );
+	injections = XLALSimInspiralTableFromLIGOLw( inspinjfile );
 
-	verbose( "injecting %d inspirals listed in file %s between times %d and %d\n", ninj, inspinjfile, tbeg, tend );
-
-	if ( ninj < 0 ) {
+	if ( !injections ) {
 		fprintf( stderr, "error: could not read file %s\n", inspinjfile );
 		exit( 1 );
-	} else if ( ninj == 0 ) {
-		fprintf( stderr, "warning: no relevant injections found in %s\n", inspinjfile );
-		return 0;
 	}
+	verbose( "injecting inspirals listed in file %s\n", inspinjfile );
 
 	// deltaF = 1.0 / ( series->deltaT * series->data->length );
 	// response = getresp( calfile, series->name, &series->epoch, deltaF, series->data->length, 1.0 );
@@ -438,8 +427,6 @@ int burstinj( REAL4TimeSeries *series, const char *burstinjfile, const char *cal
 	REAL8TimeSeries *injections;
 	COMPLEX8FrequencySeries *response;
 	// REAL8 deltaF;
-	LIGOTimeGPS tbeg = series->epoch;
-	LIGOTimeGPS tend = series->epoch;
 	unsigned i;
 
 	if ( ! burstinjfile )
@@ -449,16 +436,14 @@ int burstinj( REAL4TimeSeries *series, const char *burstinjfile, const char *cal
 		return 0;
 	}
 
-	XLALGPSAdd(&tend, series->deltaT * series->data->length);
-
 	time_slide = XLALTimeSlideTableFromLIGOLw( burstinjfile );
-	sim_burst = XLALSimBurstTableFromLIGOLw( burstinjfile, &tbeg, &tend );
+	sim_burst = XLALSimBurstTableFromLIGOLw( burstinjfile );
 	if ( !sim_burst || !time_slide ) {
 		fprintf( stderr, "error: could not read file %s\n", burstinjfile );
 		exit( 1 );
 	}
 
-	verbose( "injecting bursts listed in file %s between times %d and %d\n", burstinjfile, tbeg, tend );
+	verbose( "injecting bursts listed in file %s\n", burstinjfile );
 
 	// deltaF = 1.0 / ( series->deltaT * series->data->length );
 	// response = getresp( calfile, series->name, &series->epoch, deltaF, series->data->length, 1.0 );

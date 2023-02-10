@@ -39,6 +39,7 @@ build:
   script_env:
     - CI_COMMIT_TAG
     - CI_PIPELINE_SOURCE
+    - ENABLE_NIGHTLY=@NIGHTLY_VERSION@
     - GITLAB_CI
   skip: true  # [win]
 
@@ -54,7 +55,6 @@ requirements:
     - liblal >={{ lal_version }}
     - liblalmetaio >={{ lalmetaio_version }}
     - liblalsimulation >={{ lalsimulation_version }}
-    - metaio
 
 outputs:
   - name: liblalburst
@@ -72,13 +72,11 @@ outputs:
         - liblal >={{ lal_version }}
         - liblalmetaio >={{ lalmetaio_version }}
         - liblalsimulation >={{ lalsimulation_version }}
-        - metaio
       run:
         - gsl
         - liblal >={{ lal_version }}
         - liblalmetaio >={{ lalmetaio_version }}
         - liblalsimulation >={{ lalsimulation_version }}
-        - metaio
       run_constrained:
         - lalburst >=1.5.7
         - python-lalburst >=1.5.7
@@ -104,17 +102,17 @@ outputs:
         applications that use the LAL Burst library.
 
   - name: python-lalburst
-    script: install-python.sh
+    script: build-python.sh
     build:
       error_overdepending: true
       error_overlinking: true
       ignore_run_exports:
         - numpy
-        - openssl
         - python
       script_env:
         - CI_COMMIT_TAG
         - CI_PIPELINE_SOURCE
+        - ENABLE_NIGHTLY=@NIGHTLY_VERSION@
         - GITLAB_CI
     requirements:
       build:
@@ -132,14 +130,13 @@ outputs:
         - {{ pin_subpackage('liblalburst', exact=True) }}
         - lscsoft-glue
         - numpy
+        - pytest  # [build_platform == target_platform]
         - python
         - python-lal >={{ lal_version }}
         - python-lalmetaio >={{ lalmetaio_version }}
         - python-lalsimulation >={{ lalsimulation_version }}
         - scipy
         - tqdm
-        # provided to assist the solver, but not actually used
-        - openssl
       run:
         - gsl
         - {{ pin_subpackage('liblalburst', exact=True) }}
@@ -195,7 +192,6 @@ outputs:
       error_overdepending: true
       error_overlinking: true
       ignore_run_exports:
-        - openssl
         - python
     requirements:
       build:
@@ -206,8 +202,6 @@ outputs:
         - liblal >={{ lal_version }}
         - {{ pin_subpackage('liblalburst', exact=True) }}
         - python
-        # provided to assist the solver, but not actually used
-        - openssl
       run:
         - liblal >={{ lal_version }}
         - {{ pin_subpackage('liblalburst', exact=True) }}
@@ -219,6 +213,7 @@ outputs:
         - lalburst_cluster --help
         - lalburst_coinc --help
         - lalburst_cut --help
+        - lalburst_gen_timeslides --help
         - lalburst_injfind --help
         - lalburst_inj_pic --help
         - lalburst_plot_tisi --help

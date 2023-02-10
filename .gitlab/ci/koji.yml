@@ -1,6 +1,8 @@
-# ---------------------------
-# LALSuite Koji builds
-# ---------------------------
+# ----------------------------------------------------------------------
+# LALSuite: Koji build
+#
+# Build LALSuite RPM packages under Koji.
+# ----------------------------------------------------------------------
 
 # -- templates
 
@@ -36,10 +38,10 @@
     # regenerate epel7-lscsoft-build tag
     - koji regen-repo epel7-lscsoft-build
     # untag all but the latest three builds
-    - koji list-tagged epel7-lalsuite --quiet ${PACKAGE} | awk '{ print $1 }' | head -n -3 | xargs -d '\n' -r koji untag-build epel7-lalsuite --
+    - koji list-tagged epel7-lalsuite --quiet ${PACKAGE} | awk '{ print $1 }' | sort -V | head -n -3 | xargs -d '\n' -r koji untag-build epel7-lalsuite --
   rules:
-    - !reference [.skip-koji, rules]
-    - !reference [.nightly-default, rules]
+    - !reference [.ci-koji, rules]
+    - !reference [.ci-nightly-deploy, rules]
 
 # -- builds
 
@@ -47,6 +49,8 @@ lal:koji:
   extends:
     - .koji:build
   stage: LAL
+  needs:
+    - tarball:lal
 
 lalframe:koji:
   extends:
@@ -140,8 +144,8 @@ lalapps:koji:
 
 repository:koji:
   extends:
+    - .deploy
     - .koji:authentication
-  stage: deploy
   needs:
     - lal:koji
     - lalframe:koji
@@ -152,11 +156,13 @@ repository:koji:
     - lalpulsar:koji
     - lalinference:koji
     - lalapps:koji
-  variables:
-    GIT_STRATEGY: none
   script:
+    - |
+      if [ "X${DEPLOY_DRY_RUN}" = "Xyes" ]; then
+        echo "Skipping rest of job as DEPLOY_DRY_RUN='${DEPLOY_DRY_RUN}'"
+        exit 0
+      fi
     # generate repository
-    - koji dist-repo --allow-missing-signatures --arch=x86_64 --with-src epel7-lalsuite
+    - koji dist-repo --allow-missing-signatures --arch=x86_64 --non-latest --with-src epel7-lalsuite
   rules:
-    - !reference [.skip-koji, rules]
-    - !reference [.nightly-default, rules]
+    - !reference [.ci-nightly-deploy, rules]
