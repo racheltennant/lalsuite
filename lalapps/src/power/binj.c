@@ -50,10 +50,8 @@
 #include <lal/LALStdlib.h>
 #include <lal/LIGOLwXML.h>
 #include <lal/LIGOLwXMLRead.h>
-#include <lal/LIGOLwXMLBurstRead.h>
 #include <lal/LIGOMetadataTables.h>
 #include <lal/LIGOMetadataUtils.h>
-#include <lal/SnglBurstUtils.h>
 #include <lal/TimeDelay.h>
 #include <lal/TimeSeries.h>
 #include <lal/XLALError.h>
@@ -585,7 +583,7 @@ static int load_tisl_file_and_merge(const char *filename, ProcessTable **process
 	} else
 		tisl_search_summary_table_head = NULL;
 	if(XLALLIGOLwHasTable(filename, "sim_burst")) {
-		tisl_sim_burst_table_head = XLALSimBurstTableFromLIGOLw(filename, NULL, NULL);
+		tisl_sim_burst_table_head = XLALSimBurstTableFromLIGOLw(filename);
 		if(!tisl_sim_burst_table_head)
 			return -1;
 	}

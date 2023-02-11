@@ -3,16 +3,13 @@ MOSTLYCLEANFILES =
 include $(top_srcdir)/gnuscripts/lalsuite_header_links.am
 include $(top_srcdir)/gnuscripts/lalsuite_vcs_info.am
 
-noinst_HEADERS = \
-	LIGOLwXMLHeaders.h
-
 pkginclude_HEADERS = \
 	LALMetaIOConfig.h \
 	LALMetaIOVCSInfo.h \
 	LALMetaIOVCSInfoHeader.h \
 	LIGOLwXML.h \
 	LIGOLwXMLArray.h \
-	LIGOLwXMLlegacy.h \
+	LIGOLwXMLHeaders.h \
 	LIGOLwXMLRead.h \
 	LIGOMetadataTables.h \
 	LIGOMetadataUtils.h
@@ -21,11 +18,20 @@ lib_LTLIBRARIES = liblalmetaio.la
 
 liblalmetaio_la_SOURCES = \
 	LIGOLwXML.c \
-	LIGOLwXMLlegacy.c \
 	LIGOLwXMLArray.c \
 	LIGOLwXMLRead.c \
 	LIGOMetadataUtils.c \
+	process_params.c \
 	processtable.c \
+	search_summary.c \
+	segment.c \
+	sim_burst.c \
+	sim_inspiral.c \
+	sim_ringdown.c \
+	sngl_burst.c \
+	sngl_inspiral.c \
+	sngl_ringdown.c \
+	time_slide.c \
 	$(END_OF_LIST)
 
 nodist_liblalmetaio_la_SOURCES = \

@@ -27,7 +27,6 @@
 #include <lal/FrequencySeries.h>
 #include <lal/Units.h>
 #include <lal/StringInput.h>
-#include <lal/LIGOLwXMLInspiralRead.h>
 #include <lal/TimeSeries.h>
 #include <lal/LALInferencePrior.h>
 #include <lal/LALInferenceTemplate.h>
@@ -36,11 +35,11 @@
 #include <lal/LALInferenceReadData.h>
 #include <lal/LALInferenceReadBurstData.h>
 #include <lal/LALInferenceInit.h>
-#include <lal/LIGOLwXMLBurstRead.h>
 #include <lal/GenerateBurst.h>
 #include <lal/LALSimBurst.h>
 #include <lal/LALInferenceCalibrationErrors.h>
 #include <lal/LALInferenceInit.h>
+#include <lal/LIGOLwXMLRead.h>
 
 
 LALInferenceModel *LALInferenceInitModelReviewBurstEvidence_unimod(LALInferenceRunState *state);
@@ -259,7 +258,7 @@ LALInferenceModel * LALInferenceInitBurstModel(LALInferenceRunState *state)
       endtime=atof(ppt->value);
   ppt=LALInferenceGetProcParamVal(commandLine,"--binj");
   if (ppt) {
-    BinjTable=XLALSimBurstTableFromLIGOLw(LALInferenceGetProcParamVal(commandLine,"--binj")->value,0,0);
+    BinjTable=XLALSimBurstTableFromLIGOLw(LALInferenceGetProcParamVal(commandLine,"--binj")->value);
     if (BinjTable){
       //burst_inj=1;
       ppt=LALInferenceGetProcParamVal(commandLine,"--event");
@@ -273,7 +272,7 @@ LALInferenceModel * LALInferenceInitBurstModel(LALInferenceRunState *state)
     }
   }
   else if ((ppt=LALInferenceGetProcParamVal(commandLine,"--inj"))){
-      SimInspiralTableFromLIGOLw(&inj_table,LALInferenceGetProcParamVal(commandLine,"--inj")->value,0,0);
+      inj_table = XLALSimInspiralTableFromLIGOLw(LALInferenceGetProcParamVal(commandLine,"--inj")->value);
       if (inj_table){
         ppt=LALInferenceGetProcParamVal(commandLine,"--event");
         if(ppt){

@@ -42,24 +42,6 @@ extern "C" {
 /* ---------- inspiral specific functions ---------- */
 
 /* sngl inspiral */
-void
-LALFreeSnglInspiral (
-    LALStatus          *status,
-    SnglInspiralTable **eventHead
-    );
-
-int
-XLALFreeSnglInspiral (
-    SnglInspiralTable **eventHead
-    );
-
-void
-LALSortSnglInspiral (
-    LALStatus          *status,
-    SnglInspiralTable **eventHead,
-    int(*comparfunc)    (const void *, const void *)
-    );
-
 SnglInspiralTable *
 XLALSortSnglInspiral (
     SnglInspiralTable  *eventHead,
@@ -111,16 +93,6 @@ LALGalacticInspiralParamsToSimInspiralTable(
     );
 
 void
-LALInspiralSiteTimeAndDist(
-    LALStatus         *status,
-    SimInspiralTable  *output,
-    LALDetector       *detector,
-    LIGOTimeGPS       *endTime,
-    REAL4             *effDist,
-    SkyPosition       *skyPos
-    );
-
-void
 LALPopulateSimInspiralSiteInfo(
     LALStatus                  *status,
     SimInspiralTable           *output
@@ -137,41 +109,6 @@ int
 XLALCompareSimInspiralByGeocentEndTime(
 	const SimInspiralTable * const *a,
 	const SimInspiralTable * const *b
-    );
-
-int
-XLALFreeSimInspiral (
-    SimInspiralTable **eventHead
-    );
-
-long
-XLALSimInspiralAssignIDs (
-    SimInspiralTable *head,
-    long process_id,
-    long simulation_id
-    );
-
-int
-XLALSimInspiralChirpMassCut(
-    SimInspiralTable   **eventHead,
-    REAL4                minChirpMass,
-    REAL4                maxChirpMass
-    );
-
-int
-XLALSimInspiralCompMassCut(
-    SimInspiralTable   **eventHead,
-    REAL4                minCompMass,
-    REAL4                maxCompMass,
-    REAL4                minCompMass2,
-    REAL4                maxCompMass2
-    );
-
-int
-XLALSimInspiralTotalMassCut(
-    SimInspiralTable   **eventHead,
-    REAL4                minTotalMass,
-    REAL4                maxTotalMass
     );
 
 #ifdef  __cplusplus

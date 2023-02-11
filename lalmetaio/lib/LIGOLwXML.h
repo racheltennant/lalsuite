@@ -70,9 +70,6 @@ typedef struct
 tagLIGOLwXMLStream
 {
   LALFILE              *fp;
-  INT4                  first;
-  UINT8                 rowCount;
-  MetadataTableType     table;
 }
 LIGOLwXMLStream;
 
@@ -120,6 +117,11 @@ int XLALWriteLIGOLwXMLSimBurstTable(
 int XLALWriteLIGOLwXMLSimInspiralTable(
 	LIGOLwXMLStream *,
 	const SimInspiralTable *
+);
+
+int XLALWriteLIGOLwXMLSimRingdownTable(
+	LIGOLwXMLStream *xml,
+	const SimRingdownTable *sim_ringdown
 );
 
 int XLALWriteLIGOLwXMLTimeSlideTable(

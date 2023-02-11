@@ -48,7 +48,7 @@
 #include <lal/FindChirp.h>
 #include <lal/FindChirpPTF.h>
 #include <lal/LIGOLwXML.h>
-#include <lal/LIGOLwXMLInspiralRead.h>
+#include <lal/LIGOLwXMLRead.h>
 #include <lal/DetectorSite.h>
 #include <lal/TimeDelay.h>
 #include <lal/DetResponse.h>
@@ -69,6 +69,7 @@
 #include "gpstime.h"
 #include "FindChirpTD.h"
 #include "FindChirpDatatypes.h"
+#include "InspiralTmpltBankFromLIGOLw.h"
 
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_vector.h>
