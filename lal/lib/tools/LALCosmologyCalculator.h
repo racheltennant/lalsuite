@@ -75,6 +75,15 @@ double XLALHubbleParameter(double z,
             void *omega
             );
             
+/*Add Integrand function*/
+double XLALIntegrandDistanceMeasure(double z,
+            void *omega
+            );
+/*Add Distance measure function*/
+double XLALDistanceMeasure(
+            LALCosmologicalParameters *omega, 
+            double z);
+
 double XLALIntegrateHubbleParameter(
             LALCosmologicalParameters *omega, 
             double z);

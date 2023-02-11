@@ -2127,16 +2127,22 @@ void  GetSpheroidalCoefficients(IMRPhenomXHMPhaseCoefficients *pPhase, IMRPhenom
   /*******************************************************************************/
 
   // WITHOUT mode mixing.
+  /*Try adding an extra parameter that does nothing, using line 358 from PNCoefficients.c*/
+  /*LALDict *extraParams=XLALCreateDict();
+  ZeroParam = XLALSimInspiralWaveformParamsInsertPhenomXHMZeroParameter(extraParams,0);
+  XLALDestroyDict(extraParams);*/
+
   double IMRPhenomXHM_Phase_noModeMixing(double f, IMRPhenomX_UsefulPowers *powers_of_f, IMRPhenomXHMPhaseCoefficients *pPhase, IMRPhenomXHMWaveformStruct *pWF, UNUSED IMRPhenomXWaveformStruct *pWF22)
   {
     // Inspiral range, f < fPhaseInsMax
     if (!IMRPhenomX_StepFuncBool(f, pPhase->fPhaseMatchIN))
     {
       double PhiIns = IMRPhenomXHM_Inspiral_Phase_AnsatzInt(f, powers_of_f, pPhase);
-
       /*Phase shift*/
-      double phase_shift = 2*LAL_PI*f*(Dmeas*GSL_CONST_MKSA_SPEED_OF_LIGHT*(1-((m_over_2)**2))/(2*(lambda_grav**2)*(1+z)*(f_final**2)))
-      return PhiIns + pPhase->C1INSP*f + pPhase->CINSP + pPhase->deltaphiLM + phase_shift;
+      /*double phase_shift = 2*LAL_PI*f*(Dmeas*GSL_CONST_MKSA_SPEED_OF_LIGHT*(1-((m_over_2)**2))/(2*(lambda_grav**2)*(1+z)*(f_final**2))) */
+
+      /*return PhiIns + pPhase->C1INSP*f + pPhase->CINSP + pPhase->deltaphiLM + phase_shift;*/
+      return PhiIns + pPhase->C1INSP*f + pPhase->CINSP + pPhase->deltaphiLM; /*+ ZeroParam*/
     }
     // MRD range, f > fPhaseIntMax
     if (IMRPhenomX_StepFuncBool(f, pPhase->fPhaseMatchIM))

@@ -243,9 +243,12 @@ int XLALSimIMRPhenomXPHM(
   if (lalParams == NULL)
   {
       lalParams_aux = XLALCreateDict();
+      /*Insert new parameter:*/ /*To be added in other aux?*/
+      /*INT4 ZeroParameter = XLALSimInspiralWaveformParamsInsertPhenomXPHMZeroParameter(lalParams_aux, 0);*/
   }
   else{
       lalParams_aux = XLALDictDuplicate(lalParams);
+  
   }
 
   #if DEBUG == 1
@@ -413,9 +416,9 @@ int XLALSimIMRPhenomXPHMFromModes(
 
   */
   REAL8 mass_ratio;
-  if(m1_SI > m2_SI)
+  if(m1_SI > m2_SI )
   {
-    mass_ratio = m1_SI / m2_SI;
+    mass_ratio = m1_SI  / m2_SI;
   }
   else
   {
@@ -437,6 +440,7 @@ int XLALSimIMRPhenomXPHMFromModes(
   if (lalParams == NULL)
   {
       lalParams_aux = XLALCreateDict();
+      /*INT4 ZeroParameter = XLALSimInspiralWaveformParamsInsertPhenomXPHMZeroParameter(lalParams_aux, 0);*/
   }
   else{
       lalParams_aux = XLALDictDuplicate(lalParams);
@@ -622,6 +626,7 @@ int XLALSimIMRPhenomXPHMFromModes(
   if (lalParams == NULL)
   {
       lalParams_aux = XLALCreateDict();
+      /*INT4 ZeroParameter = XLALSimInspiralWaveformParamsInsertPhenomXPHMZeroParameter(lalParams_aux, 0);*/
   }
   else{
       lalParams_aux = XLALDictDuplicate(lalParams);
@@ -1817,10 +1822,13 @@ int XLALSimIMRPhenomXPHMOneMode(
   if (lalParams == NULL)
   {
       lalParams_aux = XLALCreateDict();
+      XLALSimInspiralWaveformParamsInsertPhenomXPHMZeroParameter(lalParams_aux, 0);
   }
   else{
       lalParams_aux = XLALDictDuplicate(lalParams);
   }
+
+
   /* Check that the modes chosen are available for the model */
   XLAL_CHECK(check_input_mode_array(lalParams_aux) == XLAL_SUCCESS, XLAL_EFAULT, "Not available mode chosen.\n");
 
@@ -1847,6 +1855,8 @@ int XLALSimIMRPhenomXPHMOneMode(
   freqs->data[0] = pWF->fMin;
   freqs->data[1] = pWF->f_max_prime;
 
+  /*Added line on Zero Parameter */
+  INT4 ZeroParameter  = XLALSimInspiralWaveformParamsLookupPhenomXPHMZeroParameter(lalParams);
 
   #if DEBUG == 1
   printf("\n\n **** Initializing precession struct... **** \n\n");
@@ -1915,7 +1925,7 @@ int XLALSimIMRPhenomXPHMOneMode(
       case 6:
       case 7:
       {
-        COMPLEX16 shiftpos = cexp( abs(m)*I*( pPrec->epsilon0 - pPrec->alpha0) );
+        COMPLEX16 shiftpos = cexp( abs(m)*I*( pPrec->epsilon0 - pPrec->alpha0 + ZeroParameter) );
         COMPLEX16 shiftneg = 1./shiftpos;
 
         for(UINT4 i = 0; i<(*hlmpos)->data->length; i++)
@@ -2051,6 +2061,7 @@ int XLALSimIMRPhenomXPHMFrequencySequenceOneMode(
   if (lalParams == NULL)
   {
       lalParams_aux = XLALCreateDict();
+      /*INT4 ZeroParameter = XLALSimInspiralWaveformParamsInsertPhenomXPHMZeroParameter(lalParams_aux, 0);*/
   }
   else{
       lalParams_aux = XLALDictDuplicate(lalParams);
@@ -2598,6 +2609,7 @@ int XLALSimIMRPhenomXPHMModes(
     if (lalParams == NULL)
     {
         lalParams_aux = XLALCreateDict();
+        /*INT4 ZeroParameter = XLALSimInspiralWaveformParamsInsertPhenomXPHMZeroParameter(lalParams_aux, 0);*/
     }
     else{
         lalParams_aux = XLALDictDuplicate(lalParams);

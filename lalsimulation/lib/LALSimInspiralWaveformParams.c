@@ -190,6 +190,7 @@ DEFINE_INSERT_FUNC(PhenomXHMRingdownAmpFitsVersion, INT4, "RDAmpFitsVersion", 12
 DEFINE_INSERT_FUNC(PhenomXHMPhaseRef21, REAL8, "PhaseRef21", 0.)
 DEFINE_INSERT_FUNC(PhenomXHMThresholdMband, REAL8, "ThresholdMband", 0.001)
 DEFINE_INSERT_FUNC(PhenomXHMAmpInterpolMB, INT4, "AmpInterpol", 1)
+DEFINE_INSERT_FUNC(PhenomXHMZeroParameter, INT4, "ZeroParameter", 0)
 
 /* IMRPhenomXPHM Parameters */
 DEFINE_INSERT_FUNC(PhenomXPHMMBandVersion, INT4, "MBandPrecVersion", 0)
@@ -198,6 +199,8 @@ DEFINE_INSERT_FUNC(PhenomXPHMUseModes, INT4, "UseModes", 0)
 DEFINE_INSERT_FUNC(PhenomXPHMModesL0Frame, INT4, "ModesL0Frame", 0)
 DEFINE_INSERT_FUNC(PhenomXPHMPrecModes, INT4, "PrecModes", 0)
 DEFINE_INSERT_FUNC(PhenomXPHMTwistPhenomHM, INT4, "TwistPhenomHM", 0)
+DEFINE_INSERT_FUNC(PhenomXPHMZeroParameter, INT4, "ZeroParameter", 0)
+
 
 /* IMRPhenomTHM Parameters */
 DEFINE_INSERT_FUNC(PhenomTHMInspiralVersion, INT4, "InspiralVersion", 0)
@@ -355,6 +358,7 @@ DEFINE_LOOKUP_FUNC(PhenomXHMRingdownAmpFitsVersion, INT4, "RDAmpFitsVersion", 12
 DEFINE_LOOKUP_FUNC(PhenomXHMPhaseRef21, REAL8, "PhaseRef21", 0.)
 DEFINE_LOOKUP_FUNC(PhenomXHMThresholdMband, REAL8, "ThresholdMband", 0.001)
 DEFINE_LOOKUP_FUNC(PhenomXHMAmpInterpolMB, INT4, "AmpInterpol", 1)
+DEFINE_LOOKUP_FUNC(PhenomXHMZeroParameter, INT4, "ZeroParameter", 0)
 
 /* IMRPhenomXPHM */
 DEFINE_LOOKUP_FUNC(PhenomXPHMMBandVersion, INT4, "MBandPrecVersion", 0)
@@ -363,6 +367,7 @@ DEFINE_LOOKUP_FUNC(PhenomXPHMUseModes, INT4, "UseModes", 0)
 DEFINE_LOOKUP_FUNC(PhenomXPHMModesL0Frame, INT4, "ModesL0Frame", 0)
 DEFINE_LOOKUP_FUNC(PhenomXPHMPrecModes, INT4, "PrecModes", 0)
 DEFINE_LOOKUP_FUNC(PhenomXPHMTwistPhenomHM, INT4, "TwistPhenomHM", 0)
+DEFINE_LOOKUP_FUNC(PhenomXPHMZeroParameter, INT4, "ZeroParameter", 0)
 
 /* IMRPhenomTHM Parameters */
 DEFINE_LOOKUP_FUNC(PhenomTHMInspiralVersion, INT4, "InspiralVersion", 0)
@@ -494,6 +499,8 @@ DEFINE_ISDEFAULT_FUNC(PhenomXHMRingdownAmpFitsVersion, INT4, "RDAmpFitsVersion",
 DEFINE_ISDEFAULT_FUNC(PhenomXHMPhaseRef21, REAL8, "PhaseRef21", 0.)
 DEFINE_ISDEFAULT_FUNC(PhenomXHMThresholdMband, REAL8, "ThresholdMband", 0.001)
 DEFINE_ISDEFAULT_FUNC(PhenomXHMAmpInterpolMB, INT4, "AmpInterpol", 1)
+DEFINE_ISDEFAULT_FUNC(PhenomXHMZeroParameter, INT4, "ZeroParameter", 0)
+
 
 /* IMRPhenomXPHM */
 DEFINE_ISDEFAULT_FUNC(PhenomXPHMMBandVersion, INT4, "MBandPrecVersion", 0)
@@ -502,6 +509,7 @@ DEFINE_ISDEFAULT_FUNC(PhenomXPHMUseModes, INT4, "UseModes", 0)
 DEFINE_ISDEFAULT_FUNC(PhenomXPHMModesL0Frame, INT4, "ModesL0Frame", 0)
 DEFINE_ISDEFAULT_FUNC(PhenomXPHMPrecModes, INT4, "PrecModes", 0)
 DEFINE_ISDEFAULT_FUNC(PhenomXPHMTwistPhenomHM, INT4, "TwistPhenomHM", 0)
+DEFINE_ISDEFAULT_FUNC(PhenomXPHMZeroParameter, INT4, "ZeroParameter", 0)
 
 /* IMRPhenomTHM Parameters */
 DEFINE_ISDEFAULT_FUNC(PhenomTHMInspiralVersion, INT4, "InspiralVersion", 0)

@@ -18,14 +18,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*#include "LALSimIMRPhenomXHM_internals.h"*/
-/*#include "LALSimIMRPhenomXHM_internals.c"*/
+#include "LALSimIMRPhenomXHM_internals.h"
+#include "LALSimIMRPhenomXHM_internals.c"
 
-/*#include "LALSimIMRPhenomXHM_structs.h"
+#include "LALSimIMRPhenomXHM_structs.h"
 #include "LALSimIMRPhenomXHM_qnm.h"
 #include "LALSimIMRPhenomXHM_multiband.c"
 
-#include "LALSimIMRPhenomXPHM.c" */
+#include "LALSimIMRPhenomXPHM.c" 
 
 /*Is this what we meant by Debug function?*/
 #ifndef _OPENMP
@@ -48,10 +48,16 @@
 
 
 /*Need to initialize LALDict sturcture before using it*/
-int main() {
+/*int main() {
     LALDict *lalParams = XLALCreateDict();
-    XLALSimInspiralWaveformParamsInsert(params, "lambda_grav", 5.0);
+    return 0;
+} */
 
+/*Check deltaTA works*/
+int main() {
+    REAL8 z = 1;
+    double deltaTA = calculateTA(z);
+    printf("This is an example for %f", deltaTA);
     return 0;
 }
 

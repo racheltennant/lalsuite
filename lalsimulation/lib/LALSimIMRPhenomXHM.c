@@ -33,6 +33,11 @@
 #include <lal/LALStdlib.h>
 #include <lal/XLALError.h>
 
+/*Include LALCosmologyCalculator*/
+#include <lal/LALCosmologyCalculator.h>
+
+#include <lastlog.h>
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -839,6 +844,22 @@ int XLALSimIMRPhenomXHMFrequencySequenceOneMode(
   }//Higher modes
 }
 
+/*Time shift function declaration*/
+/*double calculateTA(REAL8 z);*/
+
+/*Time shift function definition */
+/*double calculateTA(REAL8 z) {
+  return LAL_C_SI/(2*(1+z)); 
+}*/
+
+/*Distance measure function declaration*/
+double XLALDistanceMeasure(LALCosmologicalParameters *omega, double z);
+
+/*Call for XLALDistanceMeasure*/
+/*int main(void) {
+  return Dmeas = XLALDistanceMeasure(LALCosmologicalParameters *omega, double z);
+}*/
+
 
 /** Function to obtain a SphHarmFrequencySeries with the individual modes h_lm.
     By default it returns all the modes available in the model, both positive and negatives.
@@ -859,6 +880,27 @@ int XLALSimIMRPhenomXHMModes(
       REAL8 distance,                             /**< distance of source (m) */
   		LALDict *LALparams                          /**< LAL dictionary with extra options */
 )
+
+/*Add deltaT function here*/
+/*We are leaving the frequency outside so that we do not have to loop over the modes twice*/
+
+/*Time shift function definition */
+/*
+int calculateTA(double D, REAL8 z, double lambdaG)  {
+  return deltaTA = D*GSL_CONST_MKSA_SPEED_OF_LIGHT/(2*(lambdaG**2)*(1+z)); 
+  }   */
+
+/*Time shift function declaration*/
+/*double calculateTA(REAL8 z);*/
+
+/*Time shift main method*/
+/*Is the main supposed to be on the same file?
+int main() {
+  int result = GSL_CONST_MKSA_SPEED_OF_LIGHT/(2**(1+z));
+  return 0;
+} */
+
+
 {
     LIGOTimeGPS ligotimegps_zero = LIGOTIMEGPSZERO;
     LALDict *XHMparams;
@@ -940,6 +982,56 @@ int XLALSimIMRPhenomXHMModes(
             }
           }
         }
+
+        /*Add extra phase here*/
+        /*double deltaTA = calculateTA(1);*/
+
+        /*int main(void) {*/
+        double h = 0.7;
+        double om = 0.3;
+        double ol = 0.7;
+        double w0 = -1.0;
+        double w1 = 0.0;
+        double w2 = 0.0;
+        LALCosmologicalParameters *omega = XLALCreateCosmologicalParameters(h, om, ol, w0, w1, w2);
+        XLALSetCosmologicalParametersDefaultValue(omega);
+
+        /*Need to use z passed in by LALDict*/
+        double redshift = 0.0;
+        double lambdaG = 0.0;
+        /*For this, need to initialize LALDict structure*/
+        LALDict *lalParams = XLALCreateDict();
+        /* Check if the redshift value is specified in the LALDict */
+        if (XLALDictContains(lalParams, "redshift")) {
+            redshift = XLALSimInspiralWaveformParamsLookupRedshift(lalParams);
+        }
+        else{
+            redshift = XLALSimInspiralWaveformParamsInsertRedshift(lalParams, 1.0);
+        }
+
+        /*Try including lambdaG , now ZeroParameter just for testing*/
+        if (XLALDictContains(lalParams, "ZeroParameter")) {
+            lambdaG = XLALSimInspiralWaveformParamsLookupPhenomXHMZeroParameter(lalParams);
+        }
+        else{
+            lambdaG = XLALSimInspiralWaveformParamsInsertPhenomXHMZeroParameter(lalParams, 0.1);
+        }
+        double Dmeas = 0.0; /*initializing the variable*/
+        Dmeas = XLALDistanceMeasure(omega, redshift);
+          
+
+        XLALDestroyCosmologicalParameters(omega);
+
+        /*Print the result*/
+        printf("Dmeas = %g\n", Dmeas); /*for debugging*/
+          
+          
+        for(UINT4 idx = 0; idx < htildelm->data->length; idx++){
+              double f = idx*htildelm->deltaF; /*frequency of every element inside the loop*/
+              htildelm->data->data[idx]*=cexp(1j*LAL_PI*LAL_C_SI*LAL_C_SI*Dmeas*(1-(emm*emm/4))/((100.0*omega->h)*f*lambdaG*lambdaG));
+            }
+
+          
 
         if (!(htildelm)){ XLAL_ERROR(XLAL_EFUNC); }
 

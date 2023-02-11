@@ -129,6 +129,58 @@ double XLALHubbleParameter(double z,
     E = sqrt(om*x*x*x+ok*x*x+ol*pow(x,3.*(1.0+w0+w1+w2))*exp(-3.0*((w1+w2)*z/x + w2*z*z/(2.0*x*x))));
     return  1.0/E; 
 }
+
+/*Function declaration*/
+double XLALIntegrandDistanceMeasure(double z,void *omega);
+
+/*Add function for the distance measure*/
+double XLALIntegrandDistanceMeasure(double z,
+            void *omega
+            )
+{
+    LALCosmologicalParameters *p = (LALCosmologicalParameters *) omega;
+
+    double E=0.0;
+    double x = 1.0+z;
+    double om=p->om;
+    double ol=p->ol;
+    double ok=p->ok;
+    double w0=p->w0;
+    double w1=p->w1;
+    double w2=p->w2;
+    E = sqrt(om*x*x*x+ok*x*x+ol*pow(x,3.*(1.0+w0+w1+w2))*exp(-3.0*((w1+w2)*z/x + w2*z*z/(2.0*x*x))));
+    
+    return  1.0/(E*x*x); 
+}
+
+/*Function declaration*/
+double XLALDistanceMeasure(LALCosmologicalParameters *omega, double z);
+
+/*Add function to integrate over this in exactly the same way as XLALIntegrateHubbleParameter below*/
+double XLALDistanceMeasure(LALCosmologicalParameters *omega, double z)
+{
+    double result = 0.0;
+    double error;
+    double epsabs = 5e-5;
+    double epsrel = 1e-5;
+    size_t limit = 1024;
+    int key = 1;
+    
+    gsl_function F;
+    F.function = &XLALIntegrandDistanceMeasure;
+    F.params  = omega;
+    
+    gsl_integration_workspace * w 
+    = gsl_integration_workspace_alloc (1024);
+
+    gsl_integration_qag (&F, 0.0, z, epsabs, epsrel, 
+                    limit, key, w, &result, &error);
+
+    gsl_integration_workspace_free (w);
+
+    return result;
+}
+
 /**
  * Computes the integral of inverse of the Hubble parameter at redshift z.
  * The integral is computed using the built-in function gsl_integration_qag of the gsl library.
@@ -145,6 +197,8 @@ double XLALIntegrateHubbleParameter(LALCosmologicalParameters *omega, double z)
     
     gsl_function F;
     F.function = &XLALHubbleParameter;
+    /*Could add here something 
+    XLALHubbleParameter*((1+z)**2)*/
     F.params  = omega;
     
     gsl_integration_workspace * w 
@@ -157,6 +211,7 @@ double XLALIntegrateHubbleParameter(LALCosmologicalParameters *omega, double z)
 
     return result;
 }
+
 /**
  * This function computes the value of a uniform probability distribution over the comoving volume.
  * Details of the derivation of these formulae can be found in Coward, Burman 2005 ( http://arxiv.org/abs/astro-ph/0505181 )
