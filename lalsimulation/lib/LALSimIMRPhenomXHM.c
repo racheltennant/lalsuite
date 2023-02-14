@@ -1000,21 +1000,21 @@ int main() {
         double redshift = 0.0;
         double lambdaG = 0.0;
         /*For this, need to initialize LALDict structure*/
-        LALDict *lalParams = XLALCreateDict();
+        /*LALDict *lalParams = XLALCreateDict();*/
         /* Check if the redshift value is specified in the LALDict */
-        if (XLALDictContains(lalParams, "redshift")) {
-            redshift = XLALSimInspiralWaveformParamsLookupRedshift(lalParams);
+        if (XLALDictContains(XHMparams, "redshift")) {
+            redshift = XLALSimInspiralWaveformParamsLookupRedshift(XHMparams);
         }
         else{
-            redshift = XLALSimInspiralWaveformParamsInsertRedshift(lalParams, 1.0);
+            redshift = XLALSimInspiralWaveformParamsInsertRedshift(XHMparams, 1.0);
         }
 
         /*Try including lambdaG , now ZeroParameter just for testing*/
-        if (XLALDictContains(lalParams, "ZeroParameter")) {
-            lambdaG = XLALSimInspiralWaveformParamsLookupPhenomXHMZeroParameter(lalParams);
+        if (XLALDictContains(XHMparams, "ZeroParameter")) {
+            lambdaG = XLALSimInspiralWaveformParamsLookupPhenomXHMZeroParameter(XHMparams);
         }
         else{
-            lambdaG = XLALSimInspiralWaveformParamsInsertPhenomXHMZeroParameter(lalParams, 0.1);
+            lambdaG = XLALSimInspiralWaveformParamsInsertPhenomXHMZeroParameter(XHMparams, 0.1);
         }
         double Dmeas = 0.0; /*initializing the variable*/
         Dmeas = XLALDistanceMeasure(omega, redshift);
@@ -1029,7 +1029,7 @@ int main() {
         for(UINT4 idx = 0; idx < htildelm->data->length; idx++){
               double f = idx*htildelm->deltaF; /*frequency of every element inside the loop*/
               htildelm->data->data[idx]*=cexp(1j*LAL_PI*LAL_C_SI*LAL_C_SI*Dmeas*(1-(emm*emm/4))/((100.0*omega->h)*f*lambdaG*lambdaG));
-            }
+            } /*simplified formula for phase shift having expanded the distance measure*/
 
           
 
