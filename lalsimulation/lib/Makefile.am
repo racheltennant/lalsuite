@@ -212,6 +212,7 @@ noinst_HEADERS = \
 	LALSimIMRPhenomXHM_multiband.h \
 	LALSimIMRPhenomXPHM.h \
 	LALSimIMRPhenomXPHM.c \
+	LALSimIMRPhenomZPHM.c \
 	LALSimIMRPhenomHM.h \
 	LALSimIMRPhenomNSBH.h \
 	LALSimIMRPhenomP.c \
