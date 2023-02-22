@@ -298,9 +298,12 @@ This is a wrapper function that uses XLALSimIMRPhenomXASGenerateFD for the 22 mo
    REAL8 deltaF,                        /**< Sampling frequency (Hz) */
    REAL8 phiRef,                        /**< Orbital phase at fRef (rad) */
    REAL8 fRef_In,                       /**< Reference frequency (Hz) */
-   LALDict *lalParams                   /**< Extra params */
+   LALDict *lalParams                   /**< Extra params / want to contain zeroparam/lambdag*/
  )
  {
+if (lalParams==NULL)
+  lalParams=XLALCreateDict();
+  XLALSimInspiralWaveformParamsInsertZeroParameter(lalParams,LAL_SIM_INSPIRAL_SPIN_ORDER_35PN);
 
    /* If the 22 is required, call to PhenomX. */
    if(ell == 2 && abs(emm) == 2){
