@@ -31,6 +31,10 @@
 #include <lal/LALStdlib.h>
 #include <lal/XLALError.h>
 
+// Including the cosmology calc
+
+#include <lal/LALCosmologyCalculator.h>
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -68,14 +72,14 @@
 IMRPhenomX_UsefulPowers powers_of_lalpiHM;
 
 
-//This is a wrapper function for adding higher modes to the ModeArray       - wrapper functions guard other areas of code from changes in the wrapped functions 
-static LALDict *IMRPhenomXHM_setup_mode_array(LALDict *lalParams);          //static makes variable retain value in function 
+//This is a wrapper function for adding higher modes to the ModeArray      
+static LALDict *IMRPhenomXHM_setup_mode_array(LALDict *lalParams);         
 
 /*
 * Helper function to multiple hlm with Ylm.
 * Adapted from LALSimIMREOBNRv2HMROMUtilities.c
 */
-static int IMRPhenomXHMFDAddMode(                                          //int represents a signed integer which can have positive or negative values
+static int IMRPhenomXHMFDAddMode(                                          
   COMPLEX16FrequencySeries *hptilde,  /**<[out] hp series*/
   COMPLEX16FrequencySeries *hctilde,  /**<[out] hc series */
   COMPLEX16FrequencySeries *hlmtilde, /**< hlm mode to add */
@@ -87,11 +91,11 @@ static int IMRPhenomXHMFDAddMode(                                          //int
 );
 
 
-/* Return hptilde and hctilde from a sum of modes */                                    //so this gives us population properties from multiple modes 
+/* Return hptilde and hctilde from a sum of modes */                                     
 static int IMRPhenomXHM_MultiMode(
-  COMPLEX16FrequencySeries **hptilde, /**< [out] Frequency domain h+ GW strain */       //this and next line refer to both polarisations of grav wave signal
+  COMPLEX16FrequencySeries **hptilde, /**< [out] Frequency domain h+ GW strain */       
   COMPLEX16FrequencySeries **hctilde, /**< [out] Frequency domain hx GW strain */
-  REAL8 m1_SI,                        /**< primary mass [kg] */                         //these use what REAL8 is and binary properties 
+  REAL8 m1_SI,                        /**< primary mass [kg] */                          
   REAL8 m2_SI,                        /**< secondary mass [kg] */
   REAL8 chi1z,                        /**< aligned spin of primary */
   REAL8 chi2z,                        /**< aligned spin of secondary */
@@ -105,7 +109,7 @@ static int IMRPhenomXHM_MultiMode(
   LALDict *lalParams                  /**< LALDict struct */
 );
 
-/* Return hptilde and hctilde from a sum of modes */                                  //this is the same as above but with constant REAL8 - CHECK THIS
+/* Return hptilde and hctilde from a sum of modes */                                  
 static int IMRPhenomXHM_MultiMode2(
   COMPLEX16FrequencySeries **hptilde, /**< [out] Frequency domain h+ GW strain */
   COMPLEX16FrequencySeries **hctilde, /**< [out] Frequency domain hx GW strain */
@@ -139,7 +143,7 @@ static LALDict *IMRPhenomXHM_setup_mode_array(LALDict *lalParams)
 
     /* Only define +m modes as we get -m modes for free */
     /* IMRPhenomXHM has the following calibrated modes. 22 mode taken from IMRPhenomXAS */
-    XLALSimInspiralModeArrayActivateMode(ModeArray, 2, 2);                                   //these are the modes of the grav wave that can be included in this analysis 
+    XLALSimInspiralModeArrayActivateMode(ModeArray, 2, 2);                                    
     XLALSimInspiralModeArrayActivateMode(ModeArray, 2, 1);
     XLALSimInspiralModeArrayActivateMode(ModeArray, 3, 3);
     XLALSimInspiralModeArrayActivateMode(ModeArray, 3, 2);
@@ -284,6 +288,8 @@ With m>0 the mode h_lm is zero for positive frequencies and for the negative fre
 In the contrary, h_l-m is zero for negative frequencies and only lives for positive frequencies.
 This is a wrapper function that uses XLALSimIMRPhenomXASGenerateFD for the 22 mode and IMRPhenomXHMGenerateFDOneMode for the higher modes.
  */
+double ZeroParameter = 0.0;
+
  int XLALSimIMRPhenomXHMGenerateFDOneMode(
    COMPLEX16FrequencySeries **htildelm, /**< [out] FD waveform */
    REAL8 m1_SI,                         /**< Mass of companion 1 (kg) */
@@ -298,12 +304,16 @@ This is a wrapper function that uses XLALSimIMRPhenomXASGenerateFD for the 22 mo
    REAL8 deltaF,                        /**< Sampling frequency (Hz) */
    REAL8 phiRef,                        /**< Orbital phase at fRef (rad) */
    REAL8 fRef_In,                       /**< Reference frequency (Hz) */
+   //INT4 ZeroParameter,                   
    LALDict *lalParams                   /**< Extra params / want to contain zeroparam/lambdag*/
  )
  {
-if (lalParams==NULL)
-  lalParams=XLALCreateDict();
-  XLALSimInspiralWaveformParamsInsertZeroParameter(lalParams,LAL_SIM_INSPIRAL_SPIN_ORDER_35PN);
+  //ZeroParameter = 0;
+
+   if (lalParams==NULL){
+      lalParams=XLALCreateDict();
+   }
+   XLALSimInspiralWaveformParamsInsertPhenomZPHMZeroParameter(lalParams, ZeroParameter);
 
    /* If the 22 is required, call to PhenomX. */
    if(ell == 2 && abs(emm) == 2){
@@ -879,6 +889,8 @@ int XLALSimIMRPhenomXHMModes(
       LALparams = XLALCreateDict();
     }
 
+    LALparams = XLALCreateDict();
+    XLALSimInspiralWaveformParamsInsertPhenomZPHMZeroParameter(LALparams, ZeroParameter);
 
     /* Create new LAL dictionary with the default mode-array of PhenomXHM.
        Can not pass LALparams to this function because the mode array must be null,
@@ -940,6 +952,22 @@ int XLALSimIMRPhenomXHMModes(
             }
           }
         }
+
+//Here is where we've added in necessary equation but have done so only using the ZeroParameter in eq
+
+      double h = 0.7;
+      double om = 0.3;
+      double ol = 0.7;
+      double w0 = -1.0;
+      double w1 = 0.0;
+      double w2 = 0.0;
+      LALCosmologicalParameters *omega = XLALCreateCosmologicalParameters(h, om, ol, w0, w1, w2);
+      XLALSetCosmologicalParametersDefaultValue(omega);
+
+      for(UINT4 idx = 0; idx < htildelm->data->length; idx++){
+            double f = idx*htildelm->deltaF; /*frequency of every element inside the loop*/
+            htildelm->data->data[idx]*=cexp(1j*LAL_PI*LAL_C_SI*LAL_C_SI*ZeroParameter*(1-(emm*emm/4))/((100.0*omega->h)*f*ZeroParameter*ZeroParameter));
+          }
 
         if (!(htildelm)){ XLAL_ERROR(XLAL_EFUNC); }
 
@@ -1072,6 +1100,8 @@ int XLALSimIMRPhenomXHM(
   /* Check that the modes chosen are available for the model */
   XLAL_CHECK(check_input_mode_array(lalParams) == XLAL_SUCCESS, XLAL_EFAULT, "Not available mode chosen.\n");
 
+  lalParams=XLALCreateDict();
+  XLALSimInspiralWaveformParamsInsertPhenomZPHMZeroParameter(lalParams, ZeroParameter);
 
   /* Evaluate the model */
   retcode = IMRPhenomXHM_MultiMode(
@@ -1384,9 +1414,11 @@ static int IMRPhenomXHM_MultiMode(
   if (lalParams == NULL)
   {
       lalParams_aux = XLALCreateDict();
+      XLALSimInspiralWaveformParamsInsertPhenomZPHMZeroParameter(lalParams_aux, ZeroParameter);
   }
   else{
       lalParams_aux = XLALDictDuplicate(lalParams);
+      XLALSimInspiralWaveformParamsInsertPhenomZPHMZeroParameter(lalParams_aux, ZeroParameter);
   }
   lalParams_aux = IMRPhenomXHM_setup_mode_array(lalParams_aux);
   LALValue *ModeArray = XLALSimInspiralWaveformParamsLookupModeArray(lalParams_aux);

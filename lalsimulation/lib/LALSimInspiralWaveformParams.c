@@ -199,6 +199,10 @@ DEFINE_INSERT_FUNC(PhenomXPHMModesL0Frame, INT4, "ModesL0Frame", 0)
 DEFINE_INSERT_FUNC(PhenomXPHMPrecModes, INT4, "PrecModes", 0)
 DEFINE_INSERT_FUNC(PhenomXPHMTwistPhenomHM, INT4, "TwistPhenomHM", 0)
 
+/* IMRPhenomZPHM Parameters */
+
+DEFINE_INSERT_FUNC(PhenomZPHMZeroParameter, INT4, "ZeroParameter", 0)
+
 /* IMRPhenomTHM Parameters */
 DEFINE_INSERT_FUNC(PhenomTHMInspiralVersion, INT4, "InspiralVersion", 0)
 DEFINE_INSERT_FUNC(PhenomTPHMMergerVersion, INT4, "MergerVersion", 1)
@@ -364,6 +368,10 @@ DEFINE_LOOKUP_FUNC(PhenomXPHMModesL0Frame, INT4, "ModesL0Frame", 0)
 DEFINE_LOOKUP_FUNC(PhenomXPHMPrecModes, INT4, "PrecModes", 0)
 DEFINE_LOOKUP_FUNC(PhenomXPHMTwistPhenomHM, INT4, "TwistPhenomHM", 0)
 
+/* IMRPhenomZPHM Parameters */
+
+DEFINE_LOOKUP_FUNC(PhenomZPHMZeroParameter, INT4, "ZeroParameter", 0)
+
 /* IMRPhenomTHM Parameters */
 DEFINE_LOOKUP_FUNC(PhenomTHMInspiralVersion, INT4, "InspiralVersion", 0)
 DEFINE_LOOKUP_FUNC(PhenomTPHMMergerVersion, INT4, "MergerVersion", 1)
@@ -502,6 +510,10 @@ DEFINE_ISDEFAULT_FUNC(PhenomXPHMUseModes, INT4, "UseModes", 0)
 DEFINE_ISDEFAULT_FUNC(PhenomXPHMModesL0Frame, INT4, "ModesL0Frame", 0)
 DEFINE_ISDEFAULT_FUNC(PhenomXPHMPrecModes, INT4, "PrecModes", 0)
 DEFINE_ISDEFAULT_FUNC(PhenomXPHMTwistPhenomHM, INT4, "TwistPhenomHM", 0)
+
+/* IMRPhenomZPHM Parameters */
+
+DEFINE_ISDEFAULT_FUNC(PhenomZPHMZeroParameter, INT4, "ZeroParameter", 0)
 
 /* IMRPhenomTHM Parameters */
 DEFINE_ISDEFAULT_FUNC(PhenomTHMInspiralVersion, INT4, "InspiralVersion", 0)
