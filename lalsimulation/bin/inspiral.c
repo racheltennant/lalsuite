@@ -111,7 +111,7 @@
  * <DT>`-s` SPINO, `--spin-order=`SPINO
  * <DD>twice pN order of spin effects (-1 == all) [-1]</DD>
  * <DT>`-t` TIDEO, `--tidal-order=`TIDEO
- * <DD>ZeroParameter [0]</DD>
+ * <DD>lambdaG [0]</DD>
  * <DT>`-H` ZERO, `--Zero-Parameter=`ZERO
  * <DD>twice pN order of tidal effects (-1 == all) [-1]</DD>
  * <DT>`-f` FMIN, `--f-min=`FMIN
@@ -221,7 +221,7 @@
 #define DEFAULT_LAMBDA2 0.0
 #define DEFAULT_DQUADMON1 0.0
 #define DEFAULT_DQUADMON2 0.0
-#define DEFAULT_ZEROPARAMETER 0.0
+#define DEFAULT_LAMBDAG 0.0
 
 /* parameters given in command line arguments */
 struct params {
@@ -248,7 +248,7 @@ struct params {
     double s2x;
     double s2y;
     double s2z;
-    int ZeroParameter;
+    int lambdaG;
     LALDict *params;
 };
 
@@ -734,7 +734,7 @@ int usage(const char *program)
     fprintf(stderr, "\t-Q DQM2, --delta-quad-mon2=DQM2 \n\t\tdifference in quadrupole-monopole term of secondary [%g]\n", DEFAULT_DQUADMON2);
     fprintf(stderr, "\t-s SPINO, --spin-order=SPINO    \n\t\ttwice pN order of spin effects (-1 == all) [%d]\n", LAL_SIM_INSPIRAL_SPIN_ORDER_DEFAULT);
     fprintf(stderr, "\t-t TIDEO, --tidal-order=TIDEO   \n\t\ttwice pN order of tidal effects (-1 == all) [%d]\n", LAL_SIM_INSPIRAL_TIDAL_ORDER_DEFAULT);
-    fprintf(stderr, "\t-H ZERO, --Zero-Parameter=ZERO   \n\t\tZeroParameter [%g]\n", DEFAULT_ZEROPARAMETER);
+    fprintf(stderr, "\t-H ZERO, --Zero-Parameter=ZERO   \n\t\tlambdaG [%g]\n", DEFAULT_LAMBDAG);
     fprintf(stderr, "\t-f FMIN, --f-min=FMIN           \n\t\tfrequency to start waveform in Hertz [%g]\n", DEFAULT_F_MIN);
     fprintf(stderr, "\t-r FREF, --fRef=FREF            \n\t\treference frequency in Hertz [%g]\n", DEFAULT_FREF);
     fprintf(stderr, "\t-A AXIS, --axis=AXIS            \n\t\taxis for PhenSpin {View, TotalJ, OrbitalL} [%s]\n", frame_axis_to_string(LAL_SIM_INSPIRAL_FRAME_AXIS_DEFAULT));
@@ -798,7 +798,7 @@ struct params parseargs(int argc, char **argv)
         .s2x = DEFAULT_S2X,
         .s2y = DEFAULT_S2Y,
         .s2z = DEFAULT_S2Z,
-        .ZeroParameter = DEFAULT_ZEROPARAMETER,
+        .lambdaG = DEFAULT_LAMBDAG,
         .params = NULL
     };
     struct LALoption long_options[] = {
@@ -998,10 +998,10 @@ struct params parseargs(int argc, char **argv)
                 p.params = XLALCreateDict();
             XLALSimInspiralWaveformParamsInsertPNTidalOrder(p.params, atoi(LALoptarg));
             break;
-        case 'H':      /* ZeroParameter */
+        case 'H':      /* lambdaG */
             if (p.params == NULL)
                 p.params = XLALCreateDict();
-            XLALSimInspiralWaveformParamsInsertPhenomZPHMZeroParameter(p.params, atoi(LALoptarg));
+            XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(p.params, atoi(LALoptarg));
             break;
         case 'f':      /* f-min */
             p.f_min = atof(LALoptarg);

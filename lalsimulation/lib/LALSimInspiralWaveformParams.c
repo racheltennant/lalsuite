@@ -201,7 +201,7 @@ DEFINE_INSERT_FUNC(PhenomXPHMTwistPhenomHM, INT4, "TwistPhenomHM", 0)
 
 /* IMRPhenomZPHM Parameters */
 
-DEFINE_INSERT_FUNC(PhenomZPHMZeroParameter, INT4, "ZeroParameter", 0)
+DEFINE_INSERT_FUNC(PhenomZPHMLambdaG, INT4, "lambdaG", 0)
 
 /* IMRPhenomTHM Parameters */
 DEFINE_INSERT_FUNC(PhenomTHMInspiralVersion, INT4, "InspiralVersion", 0)
@@ -370,7 +370,7 @@ DEFINE_LOOKUP_FUNC(PhenomXPHMTwistPhenomHM, INT4, "TwistPhenomHM", 0)
 
 /* IMRPhenomZPHM Parameters */
 
-DEFINE_LOOKUP_FUNC(PhenomZPHMZeroParameter, INT4, "ZeroParameter", 0)
+DEFINE_LOOKUP_FUNC(PhenomZPHMLambdaG, INT4, "lambdaG", 0)
 
 /* IMRPhenomTHM Parameters */
 DEFINE_LOOKUP_FUNC(PhenomTHMInspiralVersion, INT4, "InspiralVersion", 0)
@@ -513,7 +513,7 @@ DEFINE_ISDEFAULT_FUNC(PhenomXPHMTwistPhenomHM, INT4, "TwistPhenomHM", 0)
 
 /* IMRPhenomZPHM Parameters */
 
-DEFINE_ISDEFAULT_FUNC(PhenomZPHMZeroParameter, INT4, "ZeroParameter", 0)
+DEFINE_ISDEFAULT_FUNC(PhenomZPHMLambdaG, INT4, "lambdaG", 0)
 
 /* IMRPhenomTHM Parameters */
 DEFINE_ISDEFAULT_FUNC(PhenomTHMInspiralVersion, INT4, "InspiralVersion", 0)

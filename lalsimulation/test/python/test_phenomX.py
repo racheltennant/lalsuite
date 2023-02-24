@@ -191,6 +191,34 @@ def test_IMRPhenomXPHM():
     # rtol with 32 mode needs to b more lenient
     np.testing.assert_allclose(new_result, expected_result, rtol=3e-4, err_msg="IMRPhenomXPHM 32 mode test failed")
 
+def test_IMRPhenomZPHM():
+    """
+    This test checks that IMRPhenomXPHM hasn't changed.
+    It does this by generating two PhenomXPHM waveforms and computing
+    their difference (according to their amplitude and phases)
+    and compares them to pre-computed values.
+
+    these pre-computed values were computed using the following line:
+
+    `expected_result  =  np.array(gen_test_data(0.5, lalsimulation.IMRPhenomXPHM))`
+
+    """
+
+    expected_result = np.array([1166.0110734324703, 334.37564200163365, 767.8213461946891, 326.0800374360311])
+
+    new_result  =  np.array(gen_test_data(0.5, lalsimulation.IMRPhenomZPHM, [[2,2],[2,1],[3,3],[4,4]]))
+
+    # rtol here needs to be more lenient to pass on builds with arm64 or MKL
+    np.testing.assert_allclose(new_result, expected_result, rtol=1e-5, err_msg="IMRPhenomZPHM no 32 mode test failed")
+
+
+    expected_result = np.array([68.9282789725476, 240.20999880535206, 25.111569754767224, 234.7465084316962])
+
+    new_result  =  np.array(gen_test_data(0.5, lalsimulation.IMRPhenomZPHM, [[3,2]]))
+
+    # rtol with 32 mode needs to b more lenient
+    np.testing.assert_allclose(new_result, expected_result, rtol=3e-4, err_msg="IMRPhenomZPHM 32 mode test failed")
+
 # -- run the tests ------------------------------
 
 if __name__ == '__main__':

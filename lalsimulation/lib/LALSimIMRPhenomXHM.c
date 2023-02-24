@@ -288,7 +288,7 @@ With m>0 the mode h_lm is zero for positive frequencies and for the negative fre
 In the contrary, h_l-m is zero for negative frequencies and only lives for positive frequencies.
 This is a wrapper function that uses XLALSimIMRPhenomXASGenerateFD for the 22 mode and IMRPhenomXHMGenerateFDOneMode for the higher modes.
  */
-double ZeroParameter = 0.0;
+double lambdaG = 0.0;
 
  int XLALSimIMRPhenomXHMGenerateFDOneMode(
    COMPLEX16FrequencySeries **htildelm, /**< [out] FD waveform */
@@ -313,7 +313,7 @@ double ZeroParameter = 0.0;
    if (lalParams==NULL){
       lalParams=XLALCreateDict();
    }
-   XLALSimInspiralWaveformParamsInsertPhenomZPHMZeroParameter(lalParams, ZeroParameter);
+   XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(lalParams, lambdaG);
 
    /* If the 22 is required, call to PhenomX. */
    if(ell == 2 && abs(emm) == 2){
@@ -890,7 +890,7 @@ int XLALSimIMRPhenomXHMModes(
     }
 
     LALparams = XLALCreateDict();
-    XLALSimInspiralWaveformParamsInsertPhenomZPHMZeroParameter(LALparams, ZeroParameter);
+    XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(LALparams, lambdaG);
 
     /* Create new LAL dictionary with the default mode-array of PhenomXHM.
        Can not pass LALparams to this function because the mode array must be null,
@@ -964,9 +964,37 @@ int XLALSimIMRPhenomXHMModes(
       LALCosmologicalParameters *omega = XLALCreateCosmologicalParameters(h, om, ol, w0, w1, w2);
       XLALSetCosmologicalParametersDefaultValue(omega);
 
+     //changing zeroparameter to be named lambdaG - check this is okay with bilby output
+
+      //double lambdaG = 0.0;
+      double redshift = 0.0;
+
+     //to add lambdaG to lalparams dictionary
+      if (XLALDictContains(LALparams, "lambdaG")){
+        lambdaG = XLALSimInspiralWaveformParamsLookupPhenomZPHMLambdaG(LALparams);
+      }
+      else {
+        lambdaG = XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(LALparams, 0.1);
+      }
+
+     // to add redshift to lalparams dictionary
+      if (XLALDictContains(LALparams, "redshift")){
+        redshift = XLALSimInspiralWaveformParamsLookupRedshift(LALparams);
+      }
+      else {
+        redshift = XLALSimInspiralWaveformParamsInsertRedshift(LALparams, 1.0);
+      }
+
+      //now defining distance measure to be included in below loop
+
+      double Dmeas = 0.0;
+      Dmeas = XLALDistanceMeasure(omega,redshift);
+
+      XLALDestroyCosmologicalParameters(omega);
+
       for(UINT4 idx = 0; idx < htildelm->data->length; idx++){
             double f = idx*htildelm->deltaF; /*frequency of every element inside the loop*/
-            htildelm->data->data[idx]*=cexp(1j*LAL_PI*LAL_C_SI*LAL_C_SI*ZeroParameter*(1-(emm*emm/4))/((100.0*omega->h)*f*ZeroParameter*ZeroParameter));
+            htildelm->data->data[idx]*=cexp(1j*LAL_PI*LAL_C_SI*LAL_C_SI*Dmeas*(1-(emm*emm/4))/((100.0*omega->h)*f*log(lambdaG)*log(lambdaG)));
           }
 
         if (!(htildelm)){ XLAL_ERROR(XLAL_EFUNC); }
@@ -1101,7 +1129,7 @@ int XLALSimIMRPhenomXHM(
   XLAL_CHECK(check_input_mode_array(lalParams) == XLAL_SUCCESS, XLAL_EFAULT, "Not available mode chosen.\n");
 
   lalParams=XLALCreateDict();
-  XLALSimInspiralWaveformParamsInsertPhenomZPHMZeroParameter(lalParams, ZeroParameter);
+  XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(lalParams, lambdaG);
 
   /* Evaluate the model */
   retcode = IMRPhenomXHM_MultiMode(
@@ -1414,11 +1442,11 @@ static int IMRPhenomXHM_MultiMode(
   if (lalParams == NULL)
   {
       lalParams_aux = XLALCreateDict();
-      XLALSimInspiralWaveformParamsInsertPhenomZPHMZeroParameter(lalParams_aux, ZeroParameter);
+      XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(lalParams_aux, lambdaG);
   }
   else{
       lalParams_aux = XLALDictDuplicate(lalParams);
-      XLALSimInspiralWaveformParamsInsertPhenomZPHMZeroParameter(lalParams_aux, ZeroParameter);
+      XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(lalParams_aux, lambdaG);
   }
   lalParams_aux = IMRPhenomXHM_setup_mode_array(lalParams_aux);
   LALValue *ModeArray = XLALSimInspiralWaveformParamsLookupModeArray(lalParams_aux);

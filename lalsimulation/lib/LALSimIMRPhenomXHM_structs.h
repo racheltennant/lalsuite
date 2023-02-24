@@ -234,8 +234,8 @@ typedef struct tagIMRPhenomXHMPhaseCoefficients
         REAL8 phiL[N_MAX_COEFFICIENTS_PHASE_INS];
         REAL8 LambdaPN;
 
-        /* ZeroParam */
-        INT4 ZeroParameter;
+        /* lambdaG */
+        INT4 lambdaG;
 
         // fits of coefficients/collocation points
         ParameterSpaceFit InspiralPhaseFits[N_HIGHERMODES_IMPLEMENTED];
