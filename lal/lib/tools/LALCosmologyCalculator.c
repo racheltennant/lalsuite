@@ -236,6 +236,16 @@ double XLALUniformComovingVolumeDensity(
     double unnorm_density = XLALComovingVolumeElement(z,p)/x;
     return unnorm_density;
 }
+
+/* Trying to add in redshift */
+
+double redshift_prior_zphm(
+    double z,
+    LALCosmologicalParameters *omega)
+{
+  return XLALUniformComovingVolumeDensity(z,omega);
+}
+  
 /**
  * This function computes the comoving volume between 0 and z
  */
@@ -333,7 +343,7 @@ double XLALIntegrateComovingVolumeDensity(LALCosmologicalParameters *omega, doub
  * Creates a LALCosmologicalParameters structure from the values of the cosmological parameters.
  * Note that the boundary condition \f$\Omega_m + \Omega_k + \Omega_\Lambda = 1\f$ is imposed here.
  */
-LALCosmologicalParameters *XLALCreateCosmologicalParameters(double h, double om, double ol, double w0, double w1, double w2)
+LALCosmologicalParameters *XLALCreateCosmologicalParameters(double h, double om, double ol, double w0, double w1, double w2, double z)
 {
     LALCosmologicalParameters *p = (LALCosmologicalParameters *)malloc(sizeof(LALCosmologicalParameters));
     p->h = h;
@@ -343,6 +353,7 @@ LALCosmologicalParameters *XLALCreateCosmologicalParameters(double h, double om,
     p->w0=w0;
     p->w1=w1;
     p->w2=w2;
+    p->z=z;
     return p;
 }
 /**
@@ -498,7 +509,7 @@ double XLALRateWeightedComovingVolumeDistribution(LALCosmologicalParametersAndRa
 LALCosmologicalParametersAndRate *XLALCreateCosmologicalParametersAndRate(void)
 {
     LALCosmologicalParametersAndRate *p = (LALCosmologicalParametersAndRate *)malloc(sizeof(LALCosmologicalParametersAndRate));
-    p->omega=XLALCreateCosmologicalParameters(0.0,0.0,0.0,0.0,0.0,0.0);
+    p->omega=XLALCreateCosmologicalParameters(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
     p->rate=XLALCreateCosmologicalRateParameters(0.0,0.0,0.0,0.0);
     return p;
 }

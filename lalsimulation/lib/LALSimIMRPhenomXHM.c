@@ -961,13 +961,14 @@ int XLALSimIMRPhenomXHMModes(
       double w0 = -1.0;
       double w1 = 0.0;
       double w2 = 0.0;
-      LALCosmologicalParameters *omega = XLALCreateCosmologicalParameters(h, om, ol, w0, w1, w2);
+      double z = 0.0;
+      LALCosmologicalParameters *omega = XLALCreateCosmologicalParameters(h, om, ol, w0, w1, w2, z);
       XLALSetCosmologicalParametersDefaultValue(omega);
 
      //changing zeroparameter to be named lambdaG - check this is okay with bilby output
 
       //double lambdaG = 0.0;
-      double redshift = 0.0;
+      //double redshift = 0.0;
 
      //to add lambdaG to lalparams dictionary
       if (XLALDictContains(LALparams, "lambdaG")){
@@ -978,17 +979,17 @@ int XLALSimIMRPhenomXHMModes(
       }
 
      // to add redshift to lalparams dictionary
-      if (XLALDictContains(LALparams, "redshift")){
-        redshift = XLALSimInspiralWaveformParamsLookupRedshift(LALparams);
-      }
-      else {
-        redshift = XLALSimInspiralWaveformParamsInsertRedshift(LALparams, 1.0);
-      }
+      //if (XLALDictContains(LALparams, "redshift")){
+        //redshift = XLALSimInspiralWaveformParamsLookupRedshift(LALparams);
+      //}
+      //else {
+       // redshift = XLALSimInspiralWaveformParamsInsertRedshift(LALparams, 1.0);
+      //}
 
       //now defining distance measure to be included in below loop
 
       double Dmeas = 0.0;
-      Dmeas = XLALDistanceMeasure(omega,redshift);
+      Dmeas = XLALDistanceMeasure(omega,z);
 
       XLALDestroyCosmologicalParameters(omega);
 

@@ -35,6 +35,7 @@ typedef struct tagLALCosmologicalParameters
     double w0;  /* 0th order dark energy equation of state parameter */
     double w1;  /* 1st order dark energy equation of state parameter */
     double w2;  /* 2nd order dark energy equation of state parameter */
+    double z; /*redshift*/
 }   LALCosmologicalParameters;
 
 typedef struct tagLALCosmologicalRateParameters
@@ -100,6 +101,11 @@ double XLALUniformComovingVolumeDensity(
             double z,
             void *omega);
 
+/* redshift */
+double redshift_prior_zphm(
+            double z,
+            LALCosmologicalParameters *omega);
+
 double XLALUniformComovingVolumeDistribution(
             LALCosmologicalParameters *omega, 
             double z,
@@ -109,7 +115,7 @@ double XLALIntegrateComovingVolume(LALCosmologicalParameters *omega, double z);
 
 double XLALIntegrateComovingVolumeDensity(LALCosmologicalParameters *omega, double z);
             
-LALCosmologicalParameters *XLALCreateCosmologicalParameters(double h, double om, double ol, double w0, double w1, double w2);
+LALCosmologicalParameters *XLALCreateCosmologicalParameters(double h, double om, double ol, double w0, double w1, double w2, double z);
 
 void XLALDestroyCosmologicalParameters(LALCosmologicalParameters *omega);
 
