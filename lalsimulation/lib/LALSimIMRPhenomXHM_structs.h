@@ -235,7 +235,7 @@ typedef struct tagIMRPhenomXHMPhaseCoefficients
         REAL8 LambdaPN;
 
         /* lambdaG */
-        INT4 lambdaG;
+        REAL8 lambdaG;
 
         // fits of coefficients/collocation points
         ParameterSpaceFit InspiralPhaseFits[N_HIGHERMODES_IMPLEMENTED];

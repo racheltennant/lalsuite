@@ -102,9 +102,9 @@ double XLALUniformComovingVolumeDensity(
             void *omega);
 
 /* redshift */
-double redshift_prior_zphm(
-            double z,
-            LALCosmologicalParameters *omega);
+//double redshift_prior_zphm(
+            //double z,
+            //LALCosmologicalParameters *omega);
 
 double XLALUniformComovingVolumeDistribution(
             LALCosmologicalParameters *omega, 

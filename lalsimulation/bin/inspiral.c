@@ -194,6 +194,7 @@
 #include <lal/LALDict.h>
 #include <lal/LALSimInspiral.h>
 #include <lal/LALSimIMR.h>
+#include <math.h>
 
 /* default values of parameters */
 #define DEFAULT_APPROX "TaylorT1"
@@ -221,7 +222,7 @@
 #define DEFAULT_LAMBDA2 0.0
 #define DEFAULT_DQUADMON1 0.0
 #define DEFAULT_DQUADMON2 0.0
-#define DEFAULT_LAMBDAG 0.0
+#define DEFAULT_LAMBDAG pow(10,15)
 
 /* parameters given in command line arguments */
 struct params {
@@ -248,7 +249,7 @@ struct params {
     double s2x;
     double s2y;
     double s2z;
-    int lambdaG;
+    double lambdaG;
     LALDict *params;
 };
 

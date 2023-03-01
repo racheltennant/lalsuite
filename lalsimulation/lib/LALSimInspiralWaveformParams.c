@@ -2,6 +2,7 @@
 #include <lal/LALDict.h>
 #include <lal/LALSimInspiral.h>
 #include <lal/LALSimInspiralWaveformParams.h>
+#include <math.h>
 
 #if 1 /* generate definitions for source */
 
@@ -201,7 +202,7 @@ DEFINE_INSERT_FUNC(PhenomXPHMTwistPhenomHM, INT4, "TwistPhenomHM", 0)
 
 /* IMRPhenomZPHM Parameters */
 
-DEFINE_INSERT_FUNC(PhenomZPHMLambdaG, INT4, "lambdaG", 0)
+DEFINE_INSERT_FUNC(PhenomZPHMLambdaG, REAL8, "lambdaG", pow(10,15))
 
 /* IMRPhenomTHM Parameters */
 DEFINE_INSERT_FUNC(PhenomTHMInspiralVersion, INT4, "InspiralVersion", 0)
@@ -370,7 +371,7 @@ DEFINE_LOOKUP_FUNC(PhenomXPHMTwistPhenomHM, INT4, "TwistPhenomHM", 0)
 
 /* IMRPhenomZPHM Parameters */
 
-DEFINE_LOOKUP_FUNC(PhenomZPHMLambdaG, INT4, "lambdaG", 0)
+DEFINE_LOOKUP_FUNC(PhenomZPHMLambdaG, REAL8, "lambdaG", pow(10,15))
 
 /* IMRPhenomTHM Parameters */
 DEFINE_LOOKUP_FUNC(PhenomTHMInspiralVersion, INT4, "InspiralVersion", 0)
@@ -513,7 +514,7 @@ DEFINE_ISDEFAULT_FUNC(PhenomXPHMTwistPhenomHM, INT4, "TwistPhenomHM", 0)
 
 /* IMRPhenomZPHM Parameters */
 
-DEFINE_ISDEFAULT_FUNC(PhenomZPHMLambdaG, INT4, "lambdaG", 0)
+DEFINE_ISDEFAULT_FUNC(PhenomZPHMLambdaG, REAL8, "lambdaG", pow(10,15))
 
 /* IMRPhenomTHM Parameters */
 DEFINE_ISDEFAULT_FUNC(PhenomTHMInspiralVersion, INT4, "InspiralVersion", 0)

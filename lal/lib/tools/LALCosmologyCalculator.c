@@ -239,12 +239,12 @@ double XLALUniformComovingVolumeDensity(
 
 /* Trying to add in redshift */
 
-double redshift_prior_zphm(
-    double z,
-    LALCosmologicalParameters *omega)
-{
-  return XLALUniformComovingVolumeDensity(z,omega);
-}
+//double redshift_prior_zphm(
+    //double z,
+   // LALCosmologicalParameters *omega)
+//{
+  //return XLALUniformComovingVolumeDensity(z,omega);
+//}
   
 /**
  * This function computes the comoving volume between 0 and z

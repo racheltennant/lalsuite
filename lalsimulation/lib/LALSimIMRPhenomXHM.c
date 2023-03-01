@@ -288,7 +288,7 @@ With m>0 the mode h_lm is zero for positive frequencies and for the negative fre
 In the contrary, h_l-m is zero for negative frequencies and only lives for positive frequencies.
 This is a wrapper function that uses XLALSimIMRPhenomXASGenerateFD for the 22 mode and IMRPhenomXHMGenerateFDOneMode for the higher modes.
  */
-double lambdaG = 0.0;
+double lambdaG = pow(10,15);
 
  int XLALSimIMRPhenomXHMGenerateFDOneMode(
    COMPLEX16FrequencySeries **htildelm, /**< [out] FD waveform */
@@ -313,7 +313,7 @@ double lambdaG = 0.0;
    if (lalParams==NULL){
       lalParams=XLALCreateDict();
    }
-   XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(lalParams, lambdaG);
+   XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(lalParams, pow(10,15));
 
    /* If the 22 is required, call to PhenomX. */
    if(ell == 2 && abs(emm) == 2){
@@ -890,7 +890,7 @@ int XLALSimIMRPhenomXHMModes(
     }
 
     LALparams = XLALCreateDict();
-    XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(LALparams, lambdaG);
+    XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(LALparams, pow(10,15));
 
     /* Create new LAL dictionary with the default mode-array of PhenomXHM.
        Can not pass LALparams to this function because the mode array must be null,
@@ -961,7 +961,7 @@ int XLALSimIMRPhenomXHMModes(
       double w0 = -1.0;
       double w1 = 0.0;
       double w2 = 0.0;
-      double z = 0.0;
+      double z = 0.1;
       LALCosmologicalParameters *omega = XLALCreateCosmologicalParameters(h, om, ol, w0, w1, w2, z);
       XLALSetCosmologicalParametersDefaultValue(omega);
 
@@ -975,7 +975,7 @@ int XLALSimIMRPhenomXHMModes(
         lambdaG = XLALSimInspiralWaveformParamsLookupPhenomZPHMLambdaG(LALparams);
       }
       else {
-        lambdaG = XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(LALparams, 0.1);
+        lambdaG = XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(LALparams, pow(10,15));
       }
 
      // to add redshift to lalparams dictionary
@@ -995,8 +995,8 @@ int XLALSimIMRPhenomXHMModes(
 
       for(UINT4 idx = 0; idx < htildelm->data->length; idx++){
             double f = idx*htildelm->deltaF; /*frequency of every element inside the loop*/
-            double log_lambdaG = log(lambdaG);
-            htildelm->data->data[idx]*=cexp(1j*LAL_PI*LAL_C_SI*LAL_C_SI*Dmeas*(1-(emm*emm/4))/((100.0*omega->h)*f*log_lambdaG*log_lambdaG));
+            //double lambdaG = log(lambdaG);
+            htildelm->data->data[idx]*=cexp(1j*LAL_PI*LAL_C_SI*LAL_C_SI*Dmeas*(1-(emm*emm/4))/((100.0*omega->h)*f*lambdaG*lambdaG));
           }
 
         if (!(htildelm)){ XLAL_ERROR(XLAL_EFUNC); }
@@ -1131,7 +1131,7 @@ int XLALSimIMRPhenomXHM(
   XLAL_CHECK(check_input_mode_array(lalParams) == XLAL_SUCCESS, XLAL_EFAULT, "Not available mode chosen.\n");
 
   lalParams=XLALCreateDict();
-  XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(lalParams, lambdaG);
+  XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(lalParams, pow(10,15));
 
   /* Evaluate the model */
   retcode = IMRPhenomXHM_MultiMode(
@@ -1444,11 +1444,11 @@ static int IMRPhenomXHM_MultiMode(
   if (lalParams == NULL)
   {
       lalParams_aux = XLALCreateDict();
-      XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(lalParams_aux, lambdaG);
+      XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(lalParams_aux, pow(10,15));
   }
   else{
       lalParams_aux = XLALDictDuplicate(lalParams);
-      XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(lalParams_aux, lambdaG);
+      XLALSimInspiralWaveformParamsInsertPhenomZPHMLambdaG(lalParams_aux, pow(10,15));
   }
   lalParams_aux = IMRPhenomXHM_setup_mode_array(lalParams_aux);
   LALValue *ModeArray = XLALSimInspiralWaveformParamsLookupModeArray(lalParams_aux);
