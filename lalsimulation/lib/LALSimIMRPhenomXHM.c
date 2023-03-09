@@ -961,7 +961,7 @@ int XLALSimIMRPhenomXHMModes(
       double w0 = -1.0;
       double w1 = 0.0;
       double w2 = 0.0;
-      double z = 0.1;
+      double z = 0.051;
       LALCosmologicalParameters *omega = XLALCreateCosmologicalParameters(h, om, ol, w0, w1, w2, z);
       XLALSetCosmologicalParametersDefaultValue(omega);
 
@@ -996,7 +996,7 @@ int XLALSimIMRPhenomXHMModes(
       for(UINT4 idx = 0; idx < htildelm->data->length; idx++){
             double f = idx*htildelm->deltaF; /*frequency of every element inside the loop*/
             //double lambdaG = log(lambdaG);
-            htildelm->data->data[idx]*=cexp(1j*LAL_PI*LAL_C_SI*LAL_C_SI*Dmeas*(1-(emm*emm/4))/((100.0*omega->h)*f*lambdaG*lambdaG));
+            htildelm->data->data[idx]*=cexp(1j*LAL_PI*LAL_C_SI*LAL_C_SI*Dmeas*((emm*emm/4)-1)/((100.0*omega->h)*f*lambdaG*lambdaG));
           }
 
         if (!(htildelm)){ XLAL_ERROR(XLAL_EFUNC); }
