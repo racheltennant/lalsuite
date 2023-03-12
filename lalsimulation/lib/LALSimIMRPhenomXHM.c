@@ -996,7 +996,7 @@ int XLALSimIMRPhenomXHMModes(
       for(UINT4 idx = 0; idx < htildelm->data->length; idx++){
             double f = idx*htildelm->deltaF; /*frequency of every element inside the loop*/
             //double lambdaG = log(lambdaG);
-            htildelm->data->data[idx]*=cexp(1j*LAL_PI*LAL_C_SI*LAL_C_SI*Dmeas*((emm*emm/4)-1)/((100.0*omega->h)*f*lambdaG*lambdaG));
+            htildelm->data->data[idx]*=cexp(1j*LAL_PI*LAL_C_SI*LAL_C_SI*Dmeas*((emm*emm/4)-1)*(3.086*pow(10,19))/((100.0*omega->h)*f*lambdaG*lambdaG));
           }
 
         if (!(htildelm)){ XLAL_ERROR(XLAL_EFUNC); }
